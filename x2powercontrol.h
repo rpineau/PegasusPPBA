@@ -138,7 +138,7 @@ private:
 	bool    m_bLinked;
 	int	    m_nISIndex;
     
-	CPegasusPPB	m_PowerPorts;
+	CPegasusPPBA	m_PowerPorts;
     
     // boot port status as this is not readable from the device.
 

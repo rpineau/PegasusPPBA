@@ -106,11 +106,11 @@ typedef struct {
 
 
 
-class CPegasusPPB
+class CPegasusPPBA
 {
 public:
-    CPegasusPPB();
-    ~CPegasusPPB();
+    CPegasusPPBA();
+    ~CPegasusPPBA();
 
     int         Connect(const char *pszPort);
     void        Disconnect(void);
