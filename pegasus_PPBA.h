@@ -28,7 +28,7 @@
 #include "../../licensedinterfaces/sberrorx.h"
 #include "../../licensedinterfaces/serxinterface.h"
 
-#define PLUGIN_DEBUG 2
+// #define PLUGIN_DEBUG 2
 
 #define SERIAL_BUFFER_SIZE 1024
 #define MAX_TIMEOUT 1000
