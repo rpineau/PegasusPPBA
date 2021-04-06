@@ -626,7 +626,7 @@ int CPegasusPPBA::getDewHeaterPWM(const int &nDewHeater)
             return m_nPWMA  ;
             break;
         case PWMB:
-            return m_nPWMA;
+            return m_nPWMB;
             break;
         default:
             return -1;
