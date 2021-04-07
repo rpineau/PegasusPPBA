@@ -149,12 +149,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\main.h" />
-    <ClInclude Include="..\pegasus_ppb.h" />
+    <ClInclude Include="..\pegasus_PPBA.h" />
     <ClInclude Include="..\x2powercontrol.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\main.cpp" />
-    <ClCompile Include="..\pegasus_ppb.cpp" />
+    <ClCompile Include="..\pegasus_PPBA.cpp" />
     <ClCompile Include="..\x2powercontrol.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
