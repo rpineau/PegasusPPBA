@@ -1,4 +1,4 @@
-# Makefile for libPegasusController
+# Makefile for libPegasusPPBA
 
 CC = gcc
 CFLAGS = -fPIC -Wall -Wextra -O2 -g -DSB_LINUX_BUILD -I. -I./../../
@@ -8,7 +8,7 @@ RM = rm -f
 STRIP = strip
 TARGET_LIB = libPegasusPPBA.so
 
-SRCS = main.cpp pegasus_PPBA.cpp x2focuser.cpp
+SRCS = main.cpp pegasus_PPBA.cpp x2powercontrol.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 .PHONY: all

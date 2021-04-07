@@ -21,7 +21,7 @@
     <ClInclude Include="..\x2powercontrol.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\pegasus_ppb.h">
+    <ClInclude Include="..\pegasus_PPBA.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -32,7 +32,7 @@
     <ClCompile Include="..\x2powercontrol.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\pegasus_ppb.cpp">
+    <ClCompile Include="..\pegasus_PPBA.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
