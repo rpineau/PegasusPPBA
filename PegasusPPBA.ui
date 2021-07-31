@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>X2Focus</class>
- <widget class="QDialog" name="X2Focus">
+ <class>X2Power</class>
+ <widget class="QDialog" name="X2Power">
   <property name="geometry">
    <rect>
     <x>0</x>

@@ -34,7 +34,7 @@
 #define MAX_TIMEOUT 1000
 #define TEXT_BUFFER_SIZE    1024
 
-#define DRIVER_VERSION  1.0
+#define DRIVER_VERSION  1.13
 
 #define NB_PORTS 4
 #define QUAD12  1
