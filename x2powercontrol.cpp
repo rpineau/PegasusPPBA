@@ -521,8 +521,9 @@ void X2PowerControl::portName(BasicStringInterface& str) const
 
 void X2PowerControl::setPortName(const char* szPort)
 {
-    if (m_pIniUtil)
+    if (m_pIniUtil) {
         m_pIniUtil->writeString(PARENT_KEY, CHILD_KEY_PORTNAME, szPort);
+    }
 
 }
 
@@ -534,8 +535,9 @@ void X2PowerControl::portNameOnToCharPtr(char* pszPort, const int& nMaxSize) con
 
     snprintf(pszPort, nMaxSize,DEF_PORT_NAME);
 
-    if (m_pIniUtil)
+    if (m_pIniUtil) {
         m_pIniUtil->readString(PARENT_KEY, CHILD_KEY_PORTNAME, pszPort, pszPort, nMaxSize);
+    }
 
 }
 

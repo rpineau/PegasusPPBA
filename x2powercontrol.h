@@ -140,13 +140,6 @@ private:
     
 	CPegasusPPBA	m_PowerPorts;
     
-    // boot port status as this is not readable from the device.
-
-    bool    m_bQuadPortOnAtBoot;
-    bool    m_bAdjustPortOnAtBoot;
-    bool    m_bPWMAOnAtBoot;
-    bool    m_bPWMBOnAtBoot;
-
     std::vector<std::string>    m_sPortNames;
     std::vector<std::string>    m_IniPortKey = {CHILD_KEY_PORT1_NAME, CHILD_KEY_PORT2_NAME, CHILD_KEY_PORT3_NAME, CHILD_KEY_PORT4_NAME};
 };
