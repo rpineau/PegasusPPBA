@@ -149,13 +149,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\pegasus_ppbaExtFocuser.h" />
     <ClInclude Include="..\powerMain.h" />
     <ClInclude Include="..\pegasus_PPBAPower.h" />
+    <ClInclude Include="..\x2focuser.h" />
     <ClInclude Include="..\x2powercontrol.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\pegasus_ppbaExtFocuser.cpp" />
     <ClCompile Include="..\powerMain.cpp" />
     <ClCompile Include="..\pegasus_PPBAPower.cpp" />
+    <ClCompile Include="..\x2focuser.cpp" />
     <ClCompile Include="..\x2powercontrol.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

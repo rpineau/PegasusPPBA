@@ -48,28 +48,28 @@ Name: "{app}\Plugins64\PowerControlPlugIns";
 
 [Files]
 ; Focuser plugin files
-Source: "focuserlist PegasusPPBAExtFocuser.txt";                            DestDir: "{app}\Miscellaneous Files"; Flags: ignoreversion
-Source: "focuserlist PegasusPPBAExtFocuser.txt";                            DestDir: "{app}\Miscellaneous Files"; DestName: "focuserlist64 PegasusPPBAExtFocuser.txt"; Flags: ignoreversion
+Source: "focuserlist PegasusPPBAExtFocuser.txt";                                DestDir: "{app}\Miscellaneous Files"; Flags: ignoreversion
+Source: "focuserlist PegasusPPBAExtFocuser.txt";                                DestDir: "{app}\Miscellaneous Files"; DestName: "focuserlist64 PegasusPPBAExtFocuser.txt"; Flags: ignoreversion
 ; 32 bits
-Source: "libPegasusUPBv2Focuser\Win32\Release\PegasusPPBAExtFocuser.dll";   DestDir: "{app}\Plugins\FocuserPlugins"; Flags: ignoreversion
-Source: "PegasusPPBAExtFocuser.ui";                                         DestDir: "{app}\Plugins\FocuserPlugins"; Flags: ignoreversion
-Source: "PegasusAstro.png";                                                 DestDir: "{app}\Plugins\FocuserPlugins"; Flags: ignoreversion
+Source: "libPegasusPPBAExtFocuser\Win32\Release\libPegasusPPBAExtFocuser.dll";  DestDir: "{app}\Plugins\FocuserPlugins"; Flags: ignoreversion
+Source: "PegasusPPBAExtFocuser.ui";                                             DestDir: "{app}\Plugins\FocuserPlugins"; Flags: ignoreversion
+Source: "PegasusAstro.png";                                                     DestDir: "{app}\Plugins\FocuserPlugins"; Flags: ignoreversion
 ; 64 bits
-Source: "libPegasusUPBv2Focuser\x64\Release\PegasusPPBAExtFocuser.dll";     DestDir: "{app}\Plugins64\FocuserPlugins"; Flags: ignoreversion; Check: DirExists(ExpandConstant('{app}\Plugins64\FocuserPlugins'))
-Source: "PegasusPPBAExtFocuser.ui";                                         DestDir: "{app}\Plugins64\FocuserPlugins"; Flags: ignoreversion; Check: DirExists(ExpandConstant('{app}\Plugins64\FocuserPlugins'))
-Source: "PegasusAstro.png";                                                 DestDir: "{app}\Plugins64\FocuserPlugins"; Flags: ignoreversion; Check: DirExists(ExpandConstant('{app}\Plugins64\FocuserPlugins'))
+Source: "libPegasusPPBAExtFocuser\x64\Release\libPegasusPPBAExtFocuser.dll";    DestDir: "{app}\Plugins64\FocuserPlugins"; Flags: ignoreversion; Check: DirExists(ExpandConstant('{app}\Plugins64\FocuserPlugins'))
+Source: "PegasusPPBAExtFocuser.ui";                                             DestDir: "{app}\Plugins64\FocuserPlugins"; Flags: ignoreversion; Check: DirExists(ExpandConstant('{app}\Plugins64\FocuserPlugins'))
+Source: "PegasusAstro.png";                                                     DestDir: "{app}\Plugins64\FocuserPlugins"; Flags: ignoreversion; Check: DirExists(ExpandConstant('{app}\Plugins64\FocuserPlugins'))
 
 ; Power plugin files
-Source: "powercontrollist PegasusPPBA.txt";                 DestDir: "{app}\Miscellaneous Files"; Flags: ignoreversion
-Source: "powercontrollist PegasusPPBA.txt";                 DestDir: "{app}\Miscellaneous Files"; Flags: ignoreversion; DestName: "powercontrollist64 PegasusPPBA.txt"
+Source: "powercontrollist PegasusPPBA.txt";                             DestDir: "{app}\Miscellaneous Files"; Flags: ignoreversion
+Source: "powercontrollist PegasusPPBA.txt";                             DestDir: "{app}\Miscellaneous Files"; Flags: ignoreversion; DestName: "powercontrollist64 PegasusPPBA.txt"
 ; 32 bit
-Source: "libPegasusPPBA\Win32\Release\libPegasusPPBA.dll";  DestDir: "{app}\Plugins\PowerControlPlugIns"; Flags: ignoreversion
-Source: "PegasusPPBA.ui";                                   DestDir: "{app}\Plugins\PowerControlPlugIns"; Flags: ignoreversion
-Source: "PegasusAstro.png";                                 DestDir: "{app}\Plugins\PowerControlPlugIns"; Flags: ignoreversion
+Source: "libPegasusPPBAPower\Win32\Release\libPegasusPPBAPower.dll";    DestDir: "{app}\Plugins\PowerControlPlugIns"; Flags: ignoreversion
+Source: "PegasusPPBA.ui";                                               DestDir: "{app}\Plugins\PowerControlPlugIns"; Flags: ignoreversion
+Source: "PegasusAstro.png";                                             DestDir: "{app}\Plugins\PowerControlPlugIns"; Flags: ignoreversion
 ; 64 bit
-Source: "libPegasusPPBA\x64\Release\libPegasusPPBA.dll";    DestDir: "{app}\Plugins64\PowerControlPlugIns"; Flags: ignoreversion; Check: DirExists(ExpandConstant('{app}\Plugins64\PowerControlPlugIns'))
-Source: "PegasusPPBA.ui";                                   DestDir: "{app}\Plugins64\PowerControlPlugIns"; Flags: ignoreversion; Check: DirExists(ExpandConstant('{app}\Plugins64\PowerControlPlugIns'))
-Source: "PegasusAstro.png";                                 DestDir: "{app}\Plugins64\PowerControlPlugIns"; Flags: ignoreversion; Check: DirExists(ExpandConstant('{app}\Plugins64\PowerControlPlugIns'))
+Source: "libPegasusPPBAPower\x64\Release\libPegasusPPBAPower.dll";      DestDir: "{app}\Plugins64\PowerControlPlugIns"; Flags: ignoreversion; Check: DirExists(ExpandConstant('{app}\Plugins64\PowerControlPlugIns'))
+Source: "PegasusPPBA.ui";                                               DestDir: "{app}\Plugins64\PowerControlPlugIns"; Flags: ignoreversion; Check: DirExists(ExpandConstant('{app}\Plugins64\PowerControlPlugIns'))
+Source: "PegasusAstro.png";                                             DestDir: "{app}\Plugins64\PowerControlPlugIns"; Flags: ignoreversion; Check: DirExists(ExpandConstant('{app}\Plugins64\PowerControlPlugIns'))
 
 [Code]
 {* Below is a function to read TheSkyXInstallPath.txt and confirm that the directory does exist
