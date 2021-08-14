@@ -51,12 +51,12 @@ cp "./libPegasusPPBAExtFocuser.so" "$TheSkyX_Path/Resources/Common/$PLUGINS_DIR/
 
 app_owner=`/usr/bin/stat -c "%u" "$TheSkyX_Path" | xargs id -n -u`
 if [ ! -z "$app_owner" ]; then
-	chown $app_owner "$TheSkyX_Path/Resources/Common/$TheSkyX_Path/Resources/Common/Miscellaneous Files/powercontrollist PegasusPPBA.txt"
+	chown $app_owner "$TheSkyX_Path/Resources/Common/Miscellaneous Files/powercontrollist PegasusPPBA.txt"
 	chown $app_owner "$TheSkyX_Path/Resources/Common/$PLUGINS_DIR/PowerControlPlugIns/PegasusPPBA.ui"
 	chown $app_owner "$TheSkyX_Path/Resources/Common/$PLUGINS_DIR/PowerControlPlugIns/PegasusAstro.png"
 	chown $app_owner "$TheSkyX_Path/Resources/Common/$PLUGINS_DIR/PowerControlPlugIns/libPegasusPPBAPower.so"
 
-	chown $app_owner "$TheSkyX_Path/Resources/Common/$TheSkyX_Path/Resources/Common/Miscellaneous Files/focuserlist PegasusPPBAExtFocuser.txt"
+	chown $app_owner "$TheSkyX_Path/Resources/Common/Miscellaneous Files/focuserlist PegasusPPBAExtFocuser.txt"
 	chown $app_owner "$TheSkyX_Path/Resources/Common/$PLUGINS_DIR/FocuserPlugIns/PegasusPPBAExtFocuser.ui"
 	chown $app_owner "$TheSkyX_Path/Resources/Common/$PLUGINS_DIR/FocuserPlugIns/PegasusAstro.png"
 	chown $app_owner "$TheSkyX_Path/Resources/Common/$PLUGINS_DIR/FocuserPlugIns/libPegasusPPBAExtFocuser.so"
