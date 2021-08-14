@@ -34,7 +34,7 @@
 #define MAX_TIMEOUT 1000
 #define TEXT_BUFFER_SIZE    1024
 
-#define DRIVER_VERSION  1.13
+#define DRIVER_VERSION  1.16
 
 #define NB_PORTS 4
 #define QUAD12  1
@@ -106,14 +106,14 @@ typedef struct {
 
 
 
-class CPegasusPPBA
+class CPegasusPPBAPower
 {
 public:
-    CPegasusPPBA();
-    ~CPegasusPPBA();
+    CPegasusPPBAPower();
+    ~CPegasusPPBAPower();
 
     int         Connect(const char *pszPort);
-    void        Disconnect(void);
+    void        Disconnect(int nInstanceCount);
     bool        IsConnected(void) { return m_bIsConnected; };
 
     void        SetSerxPointer(SerXInterface *p) { m_pSerx = p; };
@@ -124,7 +124,7 @@ public:
     int         getOnBootPowerState(void);
 
     int         getFirmwareVersion(char *pszVersion, int nStrMaxLen);
-
+    void        getFirmwareVersionString(std::string sFirmware);
     int         getLedStatus(int &nStatus);
     int         setLedStatus(int nStatus);
 
@@ -161,6 +161,7 @@ public:
     
     int         getPowerMetric(float &fTotalAmps, float &fAmpsQuad, float &fAmpsDewA, float &fAmpsDewB);
     int         getPowerMetricData();
+
 protected:
 
     int             ppbCommand(const char *pszCmd, char *pszResult, unsigned long nResultMaxLen);

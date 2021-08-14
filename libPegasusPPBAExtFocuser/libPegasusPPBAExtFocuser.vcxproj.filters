@@ -15,24 +15,36 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\main.h">
+    <ClInclude Include="..\x2focuser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pegasus_ppbaExtFocuser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pegasus_PPBAPower.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\x2powercontrol.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\pegasus_PPBA.h">
+    <ClInclude Include="..\focuserMain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\main.cpp">
+    <ClCompile Include="..\x2focuser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pegasus_ppbaExtFocuser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pegasus_PPBAPower.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\x2powercontrol.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\pegasus_PPBA.cpp">
+    <ClCompile Include="..\focuserMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

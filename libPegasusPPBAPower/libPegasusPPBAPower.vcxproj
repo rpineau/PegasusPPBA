@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{95493F36-1340-4D16-A974-87934D49FAF1}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>libPegasusPPB</RootNamespace>
+    <RootNamespace>libPegasusPPBAPower</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -91,7 +91,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;libPegasusPPB_EXPORTS;%(PreprocessorDefinitions);SB_WIN_BUILD;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;libPegasusPPBAPower_EXPORTS;%(PreprocessorDefinitions);SB_WIN_BUILD;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_WARNINGS</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -105,7 +105,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;libPegasusPPB_EXPORTS;%(PreprocessorDefinitions);SB_WIN_BUILD;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;libPegasusPPBAPower_EXPORTS;%(PreprocessorDefinitions);SB_WIN_BUILD;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_WARNINGS</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -120,7 +120,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;libPegasusPPB_EXPORTS;%(PreprocessorDefinitions);SB_WIN_BUILD;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;libPegasusPPBAPower_EXPORTS;%(PreprocessorDefinitions);SB_WIN_BUILD;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_WARNINGS</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -138,7 +138,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;libPegasusPPB_EXPORTS;%(PreprocessorDefinitions);SB_WIN_BUILD;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;libPegasusPPBAPower_EXPORTS;%(PreprocessorDefinitions);SB_WIN_BUILD;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_WARNINGS</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -149,13 +149,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\main.h" />
-    <ClInclude Include="..\pegasus_PPBA.h" />
+    <ClInclude Include="..\pegasus_ppbaExtFocuser.h" />
+    <ClInclude Include="..\powerMain.h" />
+    <ClInclude Include="..\pegasus_PPBAPower.h" />
+    <ClInclude Include="..\x2focuser.h" />
     <ClInclude Include="..\x2powercontrol.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\main.cpp" />
-    <ClCompile Include="..\pegasus_PPBA.cpp" />
+    <ClCompile Include="..\pegasus_ppbaExtFocuser.cpp" />
+    <ClCompile Include="..\powerMain.cpp" />
+    <ClCompile Include="..\pegasus_PPBAPower.cpp" />
+    <ClCompile Include="..\x2focuser.cpp" />
     <ClCompile Include="..\x2powercontrol.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

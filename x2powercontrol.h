@@ -1,3 +1,5 @@
+#ifndef __X2Power_H_
+#define __X2Power_H_
 #include <string.h>
 
 #include "../../licensedinterfaces/theskyxfacadefordriversinterface.h"
@@ -14,8 +16,10 @@
 #include "../../licensedinterfaces/circuitlabels.h"
 #include "../../licensedinterfaces/setcircuitlabels.h"
 #include "../../licensedinterfaces/serialportparams2interface.h"
+#include "../../licensedinterfaces/multiconnectiondeviceinterface.h"
 
-#include "pegasus_PPBA.h"
+#include "x2focuser.h"
+#include "pegasus_PPBAPower.h"
 
 #define PARENT_KEY          "PA_PBBA"
 #define CHILD_KEY_PORTNAME    "PortName"
@@ -41,7 +45,7 @@
 #endif
 
 
- class X2PowerControl : public PowerControlDriverInterface, public ModalSettingsDialogInterface, public X2GUIEventInterface, public CircuitLabelsInterface, public SetCircuitLabelsInterface, public SerialPortParams2Interface
+ class X2PowerControl : public PowerControlDriverInterface, public ModalSettingsDialogInterface, public X2GUIEventInterface, public CircuitLabelsInterface, public SetCircuitLabelsInterface, public SerialPortParams2Interface, public MultiConnectionDeviceInterface
 {
 public:
 	X2PowerControl( const char* pszDisplayName,
@@ -114,6 +118,14 @@ public:
     virtual void                    setParity(const SerXInterface::Parity& parity){};
     virtual bool                    isParityFixed() const        {return true;};
 
+    // MultiConnectionDeviceInterface
+    virtual int deviceIdentifier(BasicStringInterface &sIdentifier);
+    virtual int isConnectionPossible(const int &nPeerArraySize, MultiConnectionDeviceInterface **ppPeerArray, bool &bConnectionPossible);
+    virtual int useResource(MultiConnectionDeviceInterface *pPeer);
+    virtual int swapResource(MultiConnectionDeviceInterface *pPeer);
+
+    SerXInterface*  m_pSavedSerX;
+    MutexInterface* m_pSavedMutex;
 
     
 private:
@@ -138,8 +150,10 @@ private:
 	bool    m_bLinked;
 	int	    m_nISIndex;
     
-	CPegasusPPBA	m_PowerPorts;
+	CPegasusPPBAPower	m_PowerPorts;
     
     std::vector<std::string>    m_sPortNames;
     std::vector<std::string>    m_IniPortKey = {CHILD_KEY_PORT1_NAME, CHILD_KEY_PORT2_NAME, CHILD_KEY_PORT3_NAME, CHILD_KEY_PORT4_NAME};
 };
+
+#endif // __X2Power_H_

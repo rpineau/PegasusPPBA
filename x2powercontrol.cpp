@@ -17,11 +17,14 @@ X2PowerControl::X2PowerControl(const char* pszDisplayName,
 	m_pTheSkyXForMounts = pTheSkyXIn;
 	m_pSleeper = pSleeperIn;
 	m_pIniUtil = pIniUtilIn;
-	m_pIOMutex = pIOMutexIn;
 	m_pTickCount = pTickCountIn;
 
 	m_nISIndex = nInstanceIndex;
-    
+
+    m_pIOMutex = pIOMutexIn;
+    m_pSavedMutex = pIOMutexIn;
+
+    m_pSavedSerX = pSerXIn;
     m_PowerPorts.SetSerxPointer(pSerXIn);
     
     if (m_pIniUtil) {
@@ -59,8 +62,12 @@ X2PowerControl::~X2PowerControl()
 		delete GetSleeper();
 	if (GetSimpleIniUtil())
 		delete GetSimpleIniUtil();
-	if (GetMutex())
-		delete GetMutex();
+
+    if (m_pSavedSerX)
+        delete m_pSavedSerX;
+    if (m_pSavedMutex)
+        delete m_pSavedMutex;
+
 }
 
 int X2PowerControl::establishLink(void)
@@ -82,10 +89,17 @@ int X2PowerControl::establishLink(void)
 
 int X2PowerControl::terminateLink(void)
 {
-    if(m_bLinked)
-        m_PowerPorts.Disconnect();
-    
-	m_bLinked = false;
+    if(m_bLinked) {
+        X2MutexLocker ml(GetMutex());
+        m_PowerPorts.Disconnect(m_nInstanceCount);
+    }
+    m_bLinked = false;
+
+    // We're not connected, so revert to our saved interfaces
+    m_PowerPorts.SetSerxPointer(m_pSavedSerX);
+    m_pIOMutex = m_pSavedMutex;
+
+    m_bLinked = false;
 
     return SB_OK;
 }
@@ -110,8 +124,17 @@ void X2PowerControl::deviceInfoDetailedDescription(BasicStringInterface& str) co
 }
 void X2PowerControl::deviceInfoFirmwareVersion(BasicStringInterface& str)
 {
-	str = "None";
+    if(!m_bLinked) {
+        str="NA";
+    }
+    else {
+        // get firmware version
+        std::string sFirmware;
+        m_PowerPorts.getFirmwareVersionString(sFirmware);
+        str = sFirmware.c_str();
+    }
 }
+
 void X2PowerControl::deviceInfoModel(BasicStringInterface& str)
 {
 	str = "Pegasus Astro PPBA";
@@ -131,16 +154,36 @@ int X2PowerControl::queryAbstraction(const char* pszName, void** ppVal)
 {
 	*ppVal = NULL;
 
-    if (!strcmp(pszName, ModalSettingsDialogInterface_Name))
+
+    if (!strcmp(pszName, LinkInterface_Name))
+        *ppVal = (LinkInterface*)this;
+
+    else if (!strcmp(pszName, ModalSettingsDialogInterface_Name))
         *ppVal = dynamic_cast<ModalSettingsDialogInterface*>(this);
+
     else if (!strcmp(pszName, X2GUIEventInterface_Name))
         *ppVal = dynamic_cast<X2GUIEventInterface*>(this);
+
+    else if (!strcmp(pszName, LoggerInterface_Name))
+        *ppVal = GetLogger();
+
+    else if (!strcmp(pszName, ModalSettingsDialogInterface_Name))
+        *ppVal = dynamic_cast<ModalSettingsDialogInterface*>(this);
+
+    else if (!strcmp(pszName, MultiConnectionDeviceInterface_Name))
+        *ppVal = dynamic_cast<MultiConnectionDeviceInterface*>(this);
+
     else if (!strcmp(pszName, CircuitLabelsInterface_Name))
         *ppVal = dynamic_cast<CircuitLabelsInterface*>(this);
+
     else if (!strcmp(pszName, SetCircuitLabelsInterface_Name))
         *ppVal = dynamic_cast<SetCircuitLabelsInterface*>(this);
+
     else if (!strcmp(pszName, SerialPortParams2Interface_Name))
         *ppVal = dynamic_cast<SerialPortParams2Interface*>(this);
+
+    else if (!strcmp(pszName, MultiConnectionDeviceInterface_Name))
+        *ppVal = dynamic_cast<MultiConnectionDeviceInterface*>(this);
 
 	return 0;
 }
@@ -177,6 +220,8 @@ int X2PowerControl::execModalSettingsDialog()
 
     if (NULL == (dx = uiutil.X2DX()))
         return ERR_POINTER;
+
+    X2MutexLocker ml(GetMutex());
 
     if(m_bLinked) {
         m_PowerPorts.getConsolidatedStatus();
@@ -437,7 +482,10 @@ int X2PowerControl::circuitState(const int& nIndex, bool& bZeroForOffOneForOn)
 
 	if(!m_bLinked)
         return ERR_NOLINK;
-	if (nIndex >= 0 && nIndex<m_PowerPorts.getPortCount())
+
+    X2MutexLocker ml(GetMutex());
+
+    if (nIndex >= 0 && nIndex<m_PowerPorts.getPortCount())
         bZeroForOffOneForOn = m_PowerPorts.getPortOn(nIndex+1);
 	else
 		nErr = ERR_INDEX_OUT_OF_RANGE;
@@ -451,6 +499,8 @@ int X2PowerControl::setCircuitState(const int& nIndex, const bool& bZeroForOffOn
 
 	if(!m_bLinked)
         return ERR_NOLINK;
+
+    X2MutexLocker ml(GetMutex());
 	if (nIndex >= 0 && nIndex < m_PowerPorts.getPortCount())
         nErr = m_PowerPorts.setPortOn(nIndex+1, bZeroForOffOneForOn);
 	else
@@ -541,5 +591,62 @@ void X2PowerControl::portNameOnToCharPtr(char* pszPort, const int& nMaxSize) con
 
 }
 
+#pragma mark - MultiConnectionDeviceInterface
 
+int X2PowerControl::deviceIdentifier(BasicStringInterface &sIdentifier)
+{
+    sIdentifier = "PPBA_EXT";
+    return SB_OK;
+}
 
+int X2PowerControl::isConnectionPossible(const int &nPeerArraySize, MultiConnectionDeviceInterface **ppPeerArray, bool &bConnectionPossible)
+{
+    for (int nIndex = 0; nIndex < nPeerArraySize; ++nIndex)
+    {
+        X2FocuserExt *pPeer = dynamic_cast<X2FocuserExt*>(ppPeerArray[nIndex]);
+        if (pPeer == NULL)
+        {
+            bConnectionPossible = false;
+            return ERR_POINTER;
+        }
+    }
+
+    bConnectionPossible = true;
+    return SB_OK;
+}
+
+int X2PowerControl::useResource(MultiConnectionDeviceInterface *pPeer)
+{
+
+    X2FocuserExt *pFocuserPeer = dynamic_cast<X2FocuserExt*>(pPeer);
+    if (pFocuserPeer == NULL) {
+        return ERR_POINTER; // Peer must be a focuser pointer
+    }
+
+    // Use the resources held by the specified peer
+    m_pIOMutex = pFocuserPeer->m_pSavedMutex;
+    m_PowerPorts.SetSerxPointer(pFocuserPeer->m_pSavedSerX);
+    return SB_OK;
+
+}
+
+int X2PowerControl::swapResource(MultiConnectionDeviceInterface *pPeer)
+{
+
+    X2FocuserExt *pFocuserPeer = dynamic_cast<X2FocuserExt*>(pPeer);
+    if (pFocuserPeer == NULL) {
+        return ERR_POINTER; //  Peer must be a focuser pointer
+    }
+
+    // Swap this driver instance's resources for the ones held by pPeer
+    MutexInterface* pTempMutex = m_pSavedMutex;
+    SerXInterface*  pTempSerX = m_pSavedSerX;
+
+    m_pSavedMutex = pFocuserPeer->m_pSavedMutex;
+    m_pSavedSerX = pFocuserPeer->m_pSavedSerX;
+
+    pFocuserPeer->m_pSavedMutex = pTempMutex;
+    pFocuserPeer->m_pSavedSerX = pTempSerX;
+
+    return SB_OK;
+}
