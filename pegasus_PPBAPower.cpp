@@ -44,8 +44,9 @@ CPegasusPPBAPower::CPegasusPPBAPower()
     ltime = time(NULL);
     timestamp = asctime(localtime(&ltime));
     timestamp[strlen(timestamp) - 1] = 0;
-    fprintf(Logfile, "[%s] [CPegasusPPBAPower::CPegasusPPBAPower] build 2021_01_24_1540.\n", timestamp);
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::CPegasusPPBAPower] version %3.2f build 2021_08_13_2000.\n", timestamp, DRIVER_VERSION);
     fprintf(Logfile, "[%s] [CPegasusPPBAPower::CPegasusPPBAPower] Constructor Called.\n", timestamp);
+
     fflush(Logfile);
 #endif
 

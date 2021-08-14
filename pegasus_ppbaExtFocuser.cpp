@@ -40,7 +40,7 @@ CPegasusPPBA_EXTFocuser::CPegasusPPBA_EXTFocuser()
     ltime = time(NULL);
     timestamp = asctime(localtime(&ltime));
     timestamp[strlen(timestamp) - 1] = 0;
-    fprintf(Logfile, "[%s] [CPegasusPPBA_EXTFocuser::CPegasusPPBA_EXTFocuser] version %3.2f build 2021_08_10_1400.\n", timestamp, DRIVER_VERSION_FOC);
+    fprintf(Logfile, "[%s] [CPegasusPPBA_EXTFocuser::CPegasusPPBA_EXTFocuser] version %3.2f build 2021_08_13_2000.\n", timestamp, DRIVER_VERSION_FOC);
     fprintf(Logfile, "[%s] [CPegasusPPBA_EXTFocuser::CPegasusPPBA_EXTFocuser] Constructor Called.\n", timestamp);
     fflush(Logfile);
 #endif
