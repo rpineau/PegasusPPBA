@@ -361,8 +361,18 @@ int CPegasusPPBA_EXTFocuser::getMotoMaxSpeed(int &nSpeed)
 #endif
         return BAD_CMD_RESPONSE_PPBA_EXT_FOC;
     }
+    try {
+        nSpeed = std::stoi(svParsedResp[1]);
+    }
+    catch(const std::exception& e) {
+#if defined PLUGIN_DEBUG_PPBA_EXT_FOC && PLUGIN_DEBUG_PPBA_EXT_FOC >= 2
+        ltime = time(NULL);
+        timestamp = asctime(localtime(&ltime));
+        timestamp[strlen(timestamp) - 1] = 0;
+        fprintf(Logfile, "[%s] [CPegasusPPBA_EXTFocuser::getMotoMaxSpeed] convertsion exception = %s\n", timestamp, e.what());
+#endif
+    }
 
-    nSpeed = std::stoi(svParsedResp[1]);
 #if defined PLUGIN_DEBUG_PPBA_EXT_FOC && PLUGIN_DEBUG_PPBA_EXT_FOC >= 2
     ltime = time(NULL);
     timestamp = asctime(localtime(&ltime));
@@ -416,8 +426,17 @@ int CPegasusPPBA_EXTFocuser::getBacklashComp(int &nSteps)
 #endif
         return BAD_CMD_RESPONSE_PPBA_EXT_FOC;
     }
-    nSteps = std::stoi(svParsedResp[1]);
-
+    try {
+        nSteps = std::stoi(svParsedResp[1]);
+    }
+    catch(const std::exception& e) {
+#if defined PLUGIN_DEBUG_PPBA_EXT_FOC && PLUGIN_DEBUG_PPBA_EXT_FOC >= 2
+        ltime = time(NULL);
+        timestamp = asctime(localtime(&ltime));
+        timestamp[strlen(timestamp) - 1] = 0;
+        fprintf(Logfile, "[%s] [CPegasusPPBA_EXTFocuser::getBacklashComp] convertsion exception = %s\n", timestamp, e.what());
+#endif
+    }
     return nErr;
 }
 
@@ -486,8 +505,14 @@ int CPegasusPPBA_EXTFocuser::getTemperature(double &dTemperature)
     else {
         if(svParsedResp[3].find("nan")!=-1)
             dTemperature = -100.0f;
-        else
-            dTemperature = std::stof(svParsedResp[3]);
+        else {
+            try {
+                dTemperature = std::stof(svParsedResp[3]);
+            }
+            catch(const std::exception& e) {
+                dTemperature = -100.0f;
+            }
+        }
     }
 #if defined PLUGIN_DEBUG_PPBA_EXT_FOC && PLUGIN_DEBUG_PPBA_EXT_FOC >= 2
     ltime = time(NULL);
@@ -526,7 +551,18 @@ int CPegasusPPBA_EXTFocuser::getPosition(int &nPosition)
         return BAD_CMD_RESPONSE_PPBA_EXT_FOC;
     }
 
-    nPosition = std::stoi(svParsedResp[1]);
+    try {
+        nPosition = std::stoi(svParsedResp[1]);
+    }
+    catch(const std::exception& e) {
+#if defined PLUGIN_DEBUG_PPBA_EXT_FOC && PLUGIN_DEBUG_PPBA_EXT_FOC >= 2
+        ltime = time(NULL);
+        timestamp = asctime(localtime(&ltime));
+        timestamp[strlen(timestamp) - 1] = 0;
+        fprintf(Logfile, "[%s] [CPegasusPPBA_EXTFocuser::getPosition] convertsion exception = %s\n", timestamp, e.what());
+#endif
+    }
+
     m_nCurpos = nPosition;
     
 #if defined PLUGIN_DEBUG_PPBA_EXT_FOC && PLUGIN_DEBUG_PPBA_EXT_FOC >= 2
@@ -659,7 +695,17 @@ int CPegasusPPBA_EXTFocuser::getReverseEnable(bool &bEnabled)
 #endif
         return BAD_CMD_RESPONSE_PPBA_EXT_FOC;
     }
-    bEnabled = std::stoi(svParsedResp[1])== 2?true:false;
+    try {
+        bEnabled = std::stoi(svParsedResp[1])== 2?true:false;
+    }
+    catch(const std::exception& e) {
+#if defined PLUGIN_DEBUG_PPBA_EXT_FOC && PLUGIN_DEBUG_PPBA_EXT_FOC >= 2
+        ltime = time(NULL);
+        timestamp = asctime(localtime(&ltime));
+        timestamp[strlen(timestamp) - 1] = 0;
+        fprintf(Logfile, "[%s] [CPegasusPPBA_EXTFocuser::getStepperStatus] convertsion exception = %s\n", timestamp, e.what());
+#endif
+    }
     return nErr;
 }
 
@@ -707,8 +753,17 @@ int CPegasusPPBA_EXTFocuser::getMicrostepping(int &nStepping)
 #endif
         return BAD_CMD_RESPONSE_PPBA_EXT_FOC;
     }
-
-    nStepping = std::stoi(svParsedResp[1]);
+    try {
+        nStepping = std::stoi(svParsedResp[1]);
+    }
+    catch(const std::exception& e) {
+#if defined PLUGIN_DEBUG_PPBA_EXT_FOC && PLUGIN_DEBUG_PPBA_EXT_FOC >= 2
+        ltime = time(NULL);
+        timestamp = asctime(localtime(&ltime));
+        timestamp[strlen(timestamp) - 1] = 0;
+        fprintf(Logfile, "[%s] [CPegasusPPBA_EXTFocuser::getMicrostepping] convertsion exception = %s\n", timestamp, e.what());
+#endif
+    }
     return nErr;
 }
 

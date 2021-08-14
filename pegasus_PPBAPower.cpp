@@ -268,19 +268,28 @@ int CPegasusPPBAPower::getConsolidatedStatus()
     fprintf(Logfile, "[%s][CPegasusPPBAPower::getConsolidatedStatus] m_svParsedResp[ppbAdjPortVolt] = %s \n", timestamp, m_svParsedResp[ppbAdjPortVolt].c_str());
     fflush(Logfile);
 #endif
-
-    m_globalStatus.fVoltage = std::stof(m_svParsedResp[ppbVoltage]);
-    m_globalStatus.fCurent = std::stof(m_svParsedResp[ppbCurrent]);
-    m_globalStatus.fTemp = std::stof(m_svParsedResp[ppbTemp]);
-    m_globalStatus.nHumidity = std::stoi(m_svParsedResp[ppbHumidity]);
-    m_globalStatus.fDewPoint = std::stof(m_svParsedResp[ppbDewPoint]);
-    m_globalStatus.bQuadPortOn = std::stoi(m_svParsedResp[ppbQuadPortStatus])==1;
-    m_globalStatus.bAdjPortOn = std::stoi(m_svParsedResp[ppbDSLRPortStatus])==1;
-    m_globalStatus.nDewAPWM = std::stoi(m_svParsedResp[ppbDew1PWM]);
-    m_globalStatus.nDewBPWM = std::stoi(m_svParsedResp[ppbDew2PWM]);
-    m_globalStatus.bAutoDew = std::stoi(m_svParsedResp[ppbAutodew])==1;
-    m_globalStatus.bPowerAlert = std::stoi(m_svParsedResp[ppbPowerAlert])==1;
-    m_globalStatus.AdjPortVolts = std::stof(m_svParsedResp[ppbAdjPortVolt]);
+    try {
+        m_globalStatus.fVoltage = std::stof(m_svParsedResp[ppbVoltage]);
+        m_globalStatus.fCurent = std::stof(m_svParsedResp[ppbCurrent]);
+        m_globalStatus.fTemp = std::stof(m_svParsedResp[ppbTemp]);
+        m_globalStatus.nHumidity = std::stoi(m_svParsedResp[ppbHumidity]);
+        m_globalStatus.fDewPoint = std::stof(m_svParsedResp[ppbDewPoint]);
+        m_globalStatus.bQuadPortOn = std::stoi(m_svParsedResp[ppbQuadPortStatus])==1;
+        m_globalStatus.bAdjPortOn = std::stoi(m_svParsedResp[ppbDSLRPortStatus])==1;
+        m_globalStatus.nDewAPWM = std::stoi(m_svParsedResp[ppbDew1PWM]);
+        m_globalStatus.nDewBPWM = std::stoi(m_svParsedResp[ppbDew2PWM]);
+        m_globalStatus.bAutoDew = std::stoi(m_svParsedResp[ppbAutodew])==1;
+        m_globalStatus.bPowerAlert = std::stoi(m_svParsedResp[ppbPowerAlert])==1;
+        m_globalStatus.AdjPortVolts = std::stof(m_svParsedResp[ppbAdjPortVolt]);
+    }
+    catch(const std::exception& e) {
+#ifdef PLUGIN_DEBUG
+        ltime = time(NULL);
+        timestamp = asctime(localtime(&ltime));
+        timestamp[strlen(timestamp) - 1] = 0;
+        fprintf(Logfile, "[%s] [CPegasusPPBAPower::getConsolidatedStatus] convertsion exception = %s\n", timestamp, e.what());
+#endif
+    }
 
     
 
@@ -729,7 +738,17 @@ int CPegasusPPBAPower::getAutoDewAggressivness(int &nLevel)
     
     parseResp(szResp, sParsedResp);
     if(sParsedResp.size()>1) {
-        m_nAutoDewAgressiveness = std::stoi(sParsedResp[1]);
+        try {
+            m_nAutoDewAgressiveness = std::stoi(sParsedResp[1]);
+        }
+        catch(const std::exception& e) {
+#ifdef PLUGIN_DEBUG
+            ltime = time(NULL);
+            timestamp = asctime(localtime(&ltime));
+            timestamp[strlen(timestamp) - 1] = 0;
+            fprintf(Logfile, "[%s] [CPegasusPPBAPower::getAutoDewAggressivness] convertsion exception = %s\n", timestamp, e.what());
+#endif
+        }
     }
     
 #ifdef PLUGIN_DEBUG
@@ -834,7 +853,7 @@ int CPegasusPPBAPower::getPowerData()
         ltime = time(NULL);
         timestamp = asctime(localtime(&ltime));
         timestamp[strlen(timestamp) - 1] = 0;
-        fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPower] ERROR = %d\n", timestamp, nErr);
+        fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPowerMetric] ERROR = %d\n", timestamp, nErr);
         fflush(Logfile);
 #endif
         return nErr;
@@ -847,7 +866,7 @@ int CPegasusPPBAPower::getPowerData()
         ltime = time(NULL);
         timestamp = asctime(localtime(&ltime));
         timestamp[strlen(timestamp) - 1] = 0;
-        fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPower] parse error = %d\n", timestamp, nErr);
+        fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPowerMetric] parse error = %d\n", timestamp, nErr);
         fflush(Logfile);
 #endif
         return nErr;
@@ -858,25 +877,34 @@ int CPegasusPPBAPower::getPowerData()
         ltime = time(NULL);
         timestamp = asctime(localtime(&ltime));
         timestamp[strlen(timestamp) - 1] = 0;
-        fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPower]  parsing returned an incomplete answer\n", timestamp);
+        fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPowerMetric]  parsing returned an incomplete answer\n", timestamp);
         fflush(Logfile);
 #endif
         return PPB_BAD_CMD_RESPONSE;
     }
-    
-    m_globalStatus.fAverageAmps = std::stof(m_svParsedResp[averageAmps]);
-    m_globalStatus.fAmpHours = std::stof(m_svParsedResp[ampHours]);
-    m_globalStatus.fWattHours = std::stof(m_svParsedResp[wattHours]);
-    m_globalStatus.nUptimeMs = std::stoi(m_svParsedResp[uptimeMs]);
-    
+    try {
+        m_globalStatus.fAverageAmps = std::stof(m_svParsedResp[averageAmps]);
+        m_globalStatus.fAmpHours = std::stof(m_svParsedResp[ampHours]);
+        m_globalStatus.fWattHours = std::stof(m_svParsedResp[wattHours]);
+        m_globalStatus.nUptimeMs = std::stoi(m_svParsedResp[uptimeMs]);
+    }
+    catch(const std::exception& e) {
+#ifdef PLUGIN_DEBUG
+        ltime = time(NULL);
+        timestamp = asctime(localtime(&ltime));
+        timestamp[strlen(timestamp) - 1] = 0;
+        fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPowerMetric] convertsion exception = %s\n", timestamp, e.what());
+#endif
+    }
+
 #ifdef PLUGIN_DEBUG
     ltime = time(NULL);
     timestamp = asctime(localtime(&ltime));
     timestamp[strlen(timestamp) - 1] = 0;
-    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPower] fAverageAmps = %3.2f\n", timestamp, m_globalStatus.fAverageAmps);
-    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPower] fAmpHours = %3.2f\n", timestamp, m_globalStatus.fAmpHours);
-    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPower] fWattHours = %3.2f\n", timestamp, m_globalStatus.fWattHours);
-    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPower] nUptimeMs = %d\n", timestamp, m_globalStatus.nUptimeMs);
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPowerMetric] fAverageAmps = %3.2f\n", timestamp, m_globalStatus.fAverageAmps);
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPowerMetric] fAmpHours = %3.2f\n", timestamp, m_globalStatus.fAmpHours);
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPowerMetric] fWattHours = %3.2f\n", timestamp, m_globalStatus.fWattHours);
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPowerMetric] nUptimeMs = %d\n", timestamp, m_globalStatus.nUptimeMs);
     fflush(Logfile);
 #endif
 
@@ -898,7 +926,7 @@ int CPegasusPPBAPower::getPowerMetricData()
         ltime = time(NULL);
         timestamp = asctime(localtime(&ltime));
         timestamp[strlen(timestamp) - 1] = 0;
-        fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPower] ERROR = %d\n", timestamp, nErr);
+        fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPowerMetricData] ERROR = %d\n", timestamp, nErr);
         fflush(Logfile);
 #endif
         return nErr;
@@ -911,7 +939,7 @@ int CPegasusPPBAPower::getPowerMetricData()
         ltime = time(NULL);
         timestamp = asctime(localtime(&ltime));
         timestamp[strlen(timestamp) - 1] = 0;
-        fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPower] parse error = %d\n", timestamp, nErr);
+        fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPowerMetricData] parse error = %d\n", timestamp, nErr);
         fflush(Logfile);
 #endif
         return nErr;
@@ -922,25 +950,34 @@ int CPegasusPPBAPower::getPowerMetricData()
         ltime = time(NULL);
         timestamp = asctime(localtime(&ltime));
         timestamp[strlen(timestamp) - 1] = 0;
-        fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPower]  parsing returned an incomplete answer\n", timestamp);
+        fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPowerMetricData]  parsing returned an incomplete answer\n", timestamp);
         fflush(Logfile);
 #endif
         return PPB_BAD_CMD_RESPONSE;
     }
-    
-    m_globalStatus.fTotalAmps = std::stof(m_svParsedResp[totalAmps]);
-    m_globalStatus.fAmpsQuad = std::stof(m_svParsedResp[ampsQuad]);
-    m_globalStatus.fAmpsDewA = std::stof(m_svParsedResp[ampsDewA]);
-    m_globalStatus.fAmpsDewB = std::stof(m_svParsedResp[ampsDewB]);
-    
+    try {
+        m_globalStatus.fTotalAmps = std::stof(m_svParsedResp[totalAmps]);
+        m_globalStatus.fAmpsQuad = std::stof(m_svParsedResp[ampsQuad]);
+        m_globalStatus.fAmpsDewA = std::stof(m_svParsedResp[ampsDewA]);
+        m_globalStatus.fAmpsDewB = std::stof(m_svParsedResp[ampsDewB]);
+    }
+    catch(const std::exception& e) {
+#ifdef PLUGIN_DEBUG
+        ltime = time(NULL);
+        timestamp = asctime(localtime(&ltime));
+        timestamp[strlen(timestamp) - 1] = 0;
+        fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPowerMetricData] convertsion exception = %s\n", timestamp, e.what());
+#endif
+    }
+
 #ifdef PLUGIN_DEBUG
     ltime = time(NULL);
     timestamp = asctime(localtime(&ltime));
     timestamp[strlen(timestamp) - 1] = 0;
-    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPower] fTotalAmps = %3.2f\n", timestamp, m_globalStatus.fTotalAmps);
-    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPower] fAmpsQuad = %3.2f\n", timestamp, m_globalStatus.fAmpsQuad);
-    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPower] fAmpsDewA = %3.2f\n", timestamp, m_globalStatus.fAmpsDewA);
-    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPower] fAmpsDewB = %3.2f\n", timestamp, m_globalStatus.fAmpsDewB);
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPowerMetric] fTotalAmps = %3.2f\n", timestamp, m_globalStatus.fTotalAmps);
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPowerMetric] fAmpsQuad = %3.2f\n", timestamp, m_globalStatus.fAmpsQuad);
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPowerMetric] fAmpsDewA = %3.2f\n", timestamp, m_globalStatus.fAmpsDewA);
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPowerMetric] fAmpsDewB = %3.2f\n", timestamp, m_globalStatus.fAmpsDewB);
     fflush(Logfile);
 #endif
     
