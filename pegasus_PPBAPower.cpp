@@ -4,10 +4,10 @@
 //  Created by Rodolphe Pineau on 3/11/2020.
 
 
-#include "pegasus_PPBA.h"
+#include "pegasus_PPBAPower.h"
 
 
-CPegasusPPBA::CPegasusPPBA()
+CPegasusPPBAPower::CPegasusPPBAPower()
 {
     m_globalStatus.nDeviceType = NONE;
     m_globalStatus.bReady = false;
@@ -44,14 +44,14 @@ CPegasusPPBA::CPegasusPPBA()
     ltime = time(NULL);
     timestamp = asctime(localtime(&ltime));
     timestamp[strlen(timestamp) - 1] = 0;
-    fprintf(Logfile, "[%s] [CPegasusPPBA::CPegasusPPBA] build 2021_01_24_1540.\n", timestamp);
-    fprintf(Logfile, "[%s] [CPegasusPPBA::CPegasusPPBA] Constructor Called.\n", timestamp);
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::CPegasusPPBAPower] build 2021_01_24_1540.\n", timestamp);
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::CPegasusPPBAPower] Constructor Called.\n", timestamp);
     fflush(Logfile);
 #endif
 
 }
 
-CPegasusPPBA::~CPegasusPPBA()
+CPegasusPPBAPower::~CPegasusPPBAPower()
 {
 #ifdef	PLUGIN_DEBUG
 	// Close LogFile
@@ -59,7 +59,7 @@ CPegasusPPBA::~CPegasusPPBA()
 #endif
 }
 
-int CPegasusPPBA::Connect(const char *pszPort)
+int CPegasusPPBAPower::Connect(const char *pszPort)
 {
     int nErr = PLUGIN_OK;
     int nDevice;
@@ -71,7 +71,7 @@ int CPegasusPPBA::Connect(const char *pszPort)
 	ltime = time(NULL);
 	timestamp = asctime(localtime(&ltime));
 	timestamp[strlen(timestamp) - 1] = 0;
-	fprintf(Logfile, "[%s] CPegasusPPBA::Connect Called %s\n", timestamp, pszPort);
+	fprintf(Logfile, "[%s] CPegasusPPBAPower::Connect Called %s\n", timestamp, pszPort);
 	fflush(Logfile);
 #endif
 
@@ -89,7 +89,7 @@ int CPegasusPPBA::Connect(const char *pszPort)
 	ltime = time(NULL);
 	timestamp = asctime(localtime(&ltime));
 	timestamp[strlen(timestamp) - 1] = 0;
-	fprintf(Logfile, "[%s] CPegasusPPBA::Connect connected to %s\n", timestamp, pszPort);
+	fprintf(Logfile, "[%s] CPegasusPPBAPower::Connect connected to %s\n", timestamp, pszPort);
 	fflush(Logfile);
 #endif
 	
@@ -98,7 +98,7 @@ int CPegasusPPBA::Connect(const char *pszPort)
 	ltime = time(NULL);
 	timestamp = asctime(localtime(&ltime));
 	timestamp[strlen(timestamp) - 1] = 0;
-	fprintf(Logfile, "[%s] CPegasusPPBA::Connect getting device type\n", timestamp);
+	fprintf(Logfile, "[%s] CPegasusPPBAPower::Connect getting device type\n", timestamp);
 	fflush(Logfile);
 #endif
     nErr = getDeviceType(nDevice);
@@ -112,11 +112,13 @@ int CPegasusPPBA::Connect(const char *pszPort)
 		ltime = time(NULL);
 		timestamp = asctime(localtime(&ltime));
 		timestamp[strlen(timestamp) - 1] = 0;
-		fprintf(Logfile, "[%s] CPegasusPPBA::Connect **** ERROR **** getting device type\n", timestamp);
+		fprintf(Logfile, "[%s] CPegasusPPBAPower::Connect **** ERROR **** getting device type\n", timestamp);
 		fflush(Logfile);
 #endif
         return nErr;
     }
+
+    getFirmwareVersion(m_szFirmwareVersion, TEXT_BUFFER_SIZE);
     
     nErr = getConsolidatedStatus();
     if(nErr) {
@@ -126,7 +128,7 @@ int CPegasusPPBA::Connect(const char *pszPort)
         ltime = time(NULL);
         timestamp = asctime(localtime(&ltime));
         timestamp[strlen(timestamp) - 1] = 0;
-        fprintf(Logfile, "[%s] CPegasusPPBA::Connect **** ERROR **** getting device full status\n", timestamp);
+        fprintf(Logfile, "[%s] CPegasusPPBAPower::Connect **** ERROR **** getting device full status\n", timestamp);
         fflush(Logfile);
 #endif
     }
@@ -138,16 +140,16 @@ int CPegasusPPBA::Connect(const char *pszPort)
     return nErr;
 }
 
-void CPegasusPPBA::Disconnect()
+void CPegasusPPBAPower::Disconnect(int nInstanceCount)
 {
-    if(m_bIsConnected && m_pSerx)
+    if(m_bIsConnected && m_pSerx && nInstanceCount==1)
         m_pSerx->close();
- 
-	m_bIsConnected = false;
+
+    m_bIsConnected = false;
 }
 
 #pragma mark getters and setters
-int CPegasusPPBA::getStatus(int &nStatus)
+int CPegasusPPBAPower::getStatus(int &nStatus)
 {
     int nErr;
     char szResp[SERIAL_BUFFER_SIZE];
@@ -180,7 +182,7 @@ int CPegasusPPBA::getStatus(int &nStatus)
 }
 
 
-int CPegasusPPBA::getConsolidatedStatus()
+int CPegasusPPBAPower::getConsolidatedStatus()
 {
     int nErr;
     char szResp[SERIAL_BUFFER_SIZE];
@@ -194,7 +196,7 @@ int CPegasusPPBA::getConsolidatedStatus()
         ltime = time(NULL);
         timestamp = asctime(localtime(&ltime));
         timestamp[strlen(timestamp) - 1] = 0;
-        fprintf(Logfile, "[%s] [CPegasusPPBA::getConsolidatedStatus] ERROR = %d\n", timestamp, nErr);
+        fprintf(Logfile, "[%s] [CPegasusPPBAPower::getConsolidatedStatus] ERROR = %d\n", timestamp, nErr);
         fflush(Logfile);
 #endif
         return nErr;
@@ -204,7 +206,7 @@ int CPegasusPPBA::getConsolidatedStatus()
 	ltime = time(NULL);
 	timestamp = asctime(localtime(&ltime));
 	timestamp[strlen(timestamp) - 1] = 0;
-	fprintf(Logfile, "[%s][CPegasusPPBA::getConsolidatedStatus]  about to parse response\n", timestamp);
+	fprintf(Logfile, "[%s][CPegasusPPBAPower::getConsolidatedStatus]  about to parse response\n", timestamp);
 	fflush(Logfile);
 #endif
 
@@ -215,7 +217,7 @@ int CPegasusPPBA::getConsolidatedStatus()
         ltime = time(NULL);
         timestamp = asctime(localtime(&ltime));
         timestamp[strlen(timestamp) - 1] = 0;
-        fprintf(Logfile, "[%s] [CPegasusPPBA::getConsolidatedStatus] parse error = %d\n", timestamp, nErr);
+        fprintf(Logfile, "[%s] [CPegasusPPBAPower::getConsolidatedStatus] parse error = %d\n", timestamp, nErr);
         fflush(Logfile);
 #endif
         return nErr;
@@ -224,7 +226,7 @@ int CPegasusPPBA::getConsolidatedStatus()
 	ltime = time(NULL);
 	timestamp = asctime(localtime(&ltime));
 	timestamp[strlen(timestamp) - 1] = 0;
-	fprintf(Logfile, "[%s][CPegasusPPBA::getConsolidatedStatus]  response parsing done\n", timestamp);
+	fprintf(Logfile, "[%s][CPegasusPPBAPower::getConsolidatedStatus]  response parsing done\n", timestamp);
 	fflush(Logfile);
 #endif
 
@@ -233,7 +235,7 @@ int CPegasusPPBA::getConsolidatedStatus()
         ltime = time(NULL);
         timestamp = asctime(localtime(&ltime));
         timestamp[strlen(timestamp) - 1] = 0;
-        fprintf(Logfile, "[%s] [CPegasusPPBA::getConsolidatedStatus]  parsing returned an incomplete answer\n", timestamp);
+        fprintf(Logfile, "[%s] [CPegasusPPBAPower::getConsolidatedStatus]  parsing returned an incomplete answer\n", timestamp);
         fflush(Logfile);
 #endif
         return PPB_BAD_CMD_RESPONSE;
@@ -243,7 +245,7 @@ int CPegasusPPBA::getConsolidatedStatus()
     ltime = time(NULL);
     timestamp = asctime(localtime(&ltime));
     timestamp[strlen(timestamp) - 1] = 0;
-    fprintf(Logfile, "[%s][CPegasusPPBA::getConsolidatedStatus] converting value and setting them in m_globalStatus\n", timestamp);
+    fprintf(Logfile, "[%s][CPegasusPPBAPower::getConsolidatedStatus] converting value and setting them in m_globalStatus\n", timestamp);
     fflush(Logfile);
 #endif
 
@@ -251,18 +253,18 @@ int CPegasusPPBA::getConsolidatedStatus()
     ltime = time(NULL);
     timestamp = asctime(localtime(&ltime));
     timestamp[strlen(timestamp) - 1] = 0;
-    fprintf(Logfile, "[%s][CPegasusPPBA::getConsolidatedStatus] m_svParsedResp[ppbVoltage] = %s \n", timestamp, m_svParsedResp[ppbVoltage].c_str());
-    fprintf(Logfile, "[%s][CPegasusPPBA::getConsolidatedStatus] m_svParsedResp[ppbCurrent] = %s \n", timestamp, m_svParsedResp[ppbCurrent].c_str());
-    fprintf(Logfile, "[%s][CPegasusPPBA::getConsolidatedStatus] m_svParsedResp[ppbTemp] = %s \n", timestamp, m_svParsedResp[ppbTemp].c_str());
-    fprintf(Logfile, "[%s][CPegasusPPBA::getConsolidatedStatus] m_svParsedResp[ppbHumidity] = %s \n", timestamp, m_svParsedResp[ppbHumidity].c_str());
-    fprintf(Logfile, "[%s][CPegasusPPBA::getConsolidatedStatus] m_svParsedResp[ppbDewPoint] = %s \n", timestamp, m_svParsedResp[ppbDewPoint].c_str());
-    fprintf(Logfile, "[%s][CPegasusPPBA::getConsolidatedStatus] m_svParsedResp[ppbQuadPortStatus] = %s \n", timestamp, m_svParsedResp[ppbQuadPortStatus].c_str());
-    fprintf(Logfile, "[%s][CPegasusPPBA::getConsolidatedStatus] m_svParsedResp[ppbDSLRPortStatus] = %s \n", timestamp, m_svParsedResp[ppbDSLRPortStatus].c_str());
-    fprintf(Logfile, "[%s][CPegasusPPBA::getConsolidatedStatus] m_svParsedResp[ppbDew1PWM] = %s \n", timestamp, m_svParsedResp[ppbDew1PWM].c_str());
-    fprintf(Logfile, "[%s][CPegasusPPBA::getConsolidatedStatus] m_svParsedResp[ppbDew2PWM] = %s \n", timestamp, m_svParsedResp[ppbDew2PWM].c_str());
-    fprintf(Logfile, "[%s][CPegasusPPBA::getConsolidatedStatus] m_svParsedResp[ppbAutodew] = %s \n", timestamp, m_svParsedResp[ppbAutodew].c_str());
-    fprintf(Logfile, "[%s][CPegasusPPBA::getConsolidatedStatus] m_svParsedResp[ppbPowerAlert] = %s \n", timestamp, m_svParsedResp[ppbPowerAlert].c_str());
-    fprintf(Logfile, "[%s][CPegasusPPBA::getConsolidatedStatus] m_svParsedResp[ppbAdjPortVolt] = %s \n", timestamp, m_svParsedResp[ppbAdjPortVolt].c_str());
+    fprintf(Logfile, "[%s][CPegasusPPBAPower::getConsolidatedStatus] m_svParsedResp[ppbVoltage] = %s \n", timestamp, m_svParsedResp[ppbVoltage].c_str());
+    fprintf(Logfile, "[%s][CPegasusPPBAPower::getConsolidatedStatus] m_svParsedResp[ppbCurrent] = %s \n", timestamp, m_svParsedResp[ppbCurrent].c_str());
+    fprintf(Logfile, "[%s][CPegasusPPBAPower::getConsolidatedStatus] m_svParsedResp[ppbTemp] = %s \n", timestamp, m_svParsedResp[ppbTemp].c_str());
+    fprintf(Logfile, "[%s][CPegasusPPBAPower::getConsolidatedStatus] m_svParsedResp[ppbHumidity] = %s \n", timestamp, m_svParsedResp[ppbHumidity].c_str());
+    fprintf(Logfile, "[%s][CPegasusPPBAPower::getConsolidatedStatus] m_svParsedResp[ppbDewPoint] = %s \n", timestamp, m_svParsedResp[ppbDewPoint].c_str());
+    fprintf(Logfile, "[%s][CPegasusPPBAPower::getConsolidatedStatus] m_svParsedResp[ppbQuadPortStatus] = %s \n", timestamp, m_svParsedResp[ppbQuadPortStatus].c_str());
+    fprintf(Logfile, "[%s][CPegasusPPBAPower::getConsolidatedStatus] m_svParsedResp[ppbDSLRPortStatus] = %s \n", timestamp, m_svParsedResp[ppbDSLRPortStatus].c_str());
+    fprintf(Logfile, "[%s][CPegasusPPBAPower::getConsolidatedStatus] m_svParsedResp[ppbDew1PWM] = %s \n", timestamp, m_svParsedResp[ppbDew1PWM].c_str());
+    fprintf(Logfile, "[%s][CPegasusPPBAPower::getConsolidatedStatus] m_svParsedResp[ppbDew2PWM] = %s \n", timestamp, m_svParsedResp[ppbDew2PWM].c_str());
+    fprintf(Logfile, "[%s][CPegasusPPBAPower::getConsolidatedStatus] m_svParsedResp[ppbAutodew] = %s \n", timestamp, m_svParsedResp[ppbAutodew].c_str());
+    fprintf(Logfile, "[%s][CPegasusPPBAPower::getConsolidatedStatus] m_svParsedResp[ppbPowerAlert] = %s \n", timestamp, m_svParsedResp[ppbPowerAlert].c_str());
+    fprintf(Logfile, "[%s][CPegasusPPBAPower::getConsolidatedStatus] m_svParsedResp[ppbAdjPortVolt] = %s \n", timestamp, m_svParsedResp[ppbAdjPortVolt].c_str());
     fflush(Logfile);
 #endif
 
@@ -285,21 +287,21 @@ int CPegasusPPBA::getConsolidatedStatus()
     ltime = time(NULL);
     timestamp = asctime(localtime(&ltime));
     timestamp[strlen(timestamp) - 1] = 0;
-    fprintf(Logfile, "[%s] [CPegasusPPBA::getConsolidatedStatus] fVoltage = %3.2f\n", timestamp, m_globalStatus.fVoltage);
-    fprintf(Logfile, "[%s] [CPegasusPPBA::getConsolidatedStatus] fCurent = %3.2f\n", timestamp, m_globalStatus.fCurent);
-    fprintf(Logfile, "[%s] [CPegasusPPBA::getConsolidatedStatus] fTemp = %3.2f\n", timestamp, m_globalStatus.fTemp);
-    fprintf(Logfile, "[%s] [CPegasusPPBA::getConsolidatedStatus] nHumidity = %d\n", timestamp, m_globalStatus.nHumidity);
-    fprintf(Logfile, "[%s] [CPegasusPPBA::getConsolidatedStatus] fDewPoint = %3.2f\n", timestamp, m_globalStatus.fDewPoint);
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getConsolidatedStatus] fVoltage = %3.2f\n", timestamp, m_globalStatus.fVoltage);
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getConsolidatedStatus] fCurent = %3.2f\n", timestamp, m_globalStatus.fCurent);
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getConsolidatedStatus] fTemp = %3.2f\n", timestamp, m_globalStatus.fTemp);
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getConsolidatedStatus] nHumidity = %d\n", timestamp, m_globalStatus.nHumidity);
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getConsolidatedStatus] fDewPoint = %3.2f\n", timestamp, m_globalStatus.fDewPoint);
 
-    fprintf(Logfile, "[%s] [CPegasusPPBA::getConsolidatedStatus] bQuadPortOn = %s\n", timestamp, m_globalStatus.bQuadPortOn?"On":"Off");
-    fprintf(Logfile, "[%s] [CPegasusPPBA::getConsolidatedStatus] bAdjPortOn = %s\n", timestamp, m_globalStatus.bAdjPortOn?"On":"Off");
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getConsolidatedStatus] bQuadPortOn = %s\n", timestamp, m_globalStatus.bQuadPortOn?"On":"Off");
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getConsolidatedStatus] bAdjPortOn = %s\n", timestamp, m_globalStatus.bAdjPortOn?"On":"Off");
 
-    fprintf(Logfile, "[%s] [CPegasusPPBA::getConsolidatedStatus] nDewAPWM = %d\n", timestamp, m_globalStatus.nDewAPWM);
-    fprintf(Logfile, "[%s] [CPegasusPPBA::getConsolidatedStatus] nDewBPWM = %d\n", timestamp, m_globalStatus.nDewBPWM);
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getConsolidatedStatus] nDewAPWM = %d\n", timestamp, m_globalStatus.nDewAPWM);
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getConsolidatedStatus] nDewBPWM = %d\n", timestamp, m_globalStatus.nDewBPWM);
     
-    fprintf(Logfile, "[%s] [CPegasusPPBA::getConsolidatedStatus] bAutoDew = %s\n", timestamp, m_globalStatus.bAutoDew?"On":"Off");
-    fprintf(Logfile, "[%s] [CPegasusPPBA::getConsolidatedStatus] bPowerAlert = %s\n", timestamp, m_globalStatus.bPowerAlert?"Alert":"Ok");
-    fprintf(Logfile, "[%s] [CPegasusPPBA::getConsolidatedStatus] AdjPortVolts = %d\n", timestamp, m_globalStatus.AdjPortVolts);
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getConsolidatedStatus] bAutoDew = %s\n", timestamp, m_globalStatus.bAutoDew?"On":"Off");
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getConsolidatedStatus] bPowerAlert = %s\n", timestamp, m_globalStatus.bPowerAlert?"Alert":"Ok");
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getConsolidatedStatus] AdjPortVolts = %d\n", timestamp, m_globalStatus.AdjPortVolts);
 
 
     fflush(Logfile);
@@ -310,7 +312,7 @@ int CPegasusPPBA::getConsolidatedStatus()
 }
 
 
-int CPegasusPPBA::getFirmwareVersion(char *pszVersion, int nStrMaxLen)
+int CPegasusPPBAPower::getFirmwareVersion(char *pszVersion, int nStrMaxLen)
 {
     int nErr = PLUGIN_OK;
     char szResp[SERIAL_BUFFER_SIZE];
@@ -329,7 +331,12 @@ int CPegasusPPBA::getFirmwareVersion(char *pszVersion, int nStrMaxLen)
     return nErr;
 }
 
-int CPegasusPPBA::getLedStatus(int &nStatus)
+void CPegasusPPBAPower::getFirmwareVersionString(std::string sFirmware)
+{
+    sFirmware.assign(m_szFirmwareVersion);
+}
+
+int CPegasusPPBAPower::getLedStatus(int &nStatus)
 {
     int nErr = PLUGIN_OK;
     int nLedStatus = 0;
@@ -358,7 +365,7 @@ int CPegasusPPBA::getLedStatus(int &nStatus)
     return nErr;
 }
 
-int CPegasusPPBA::setLedStatus(int nStatus)
+int CPegasusPPBAPower::setLedStatus(int nStatus)
 {
     int nErr = PLUGIN_OK;
     char szCmd[SERIAL_BUFFER_SIZE];
@@ -373,7 +380,7 @@ int CPegasusPPBA::setLedStatus(int nStatus)
 }
 
 
-int CPegasusPPBA::getDeviceType(int &nDevice)
+int CPegasusPPBAPower::getDeviceType(int &nDevice)
 {
     int nErr = PLUGIN_OK;
     int nStatus;
@@ -388,51 +395,55 @@ int CPegasusPPBA::getDeviceType(int &nDevice)
 }
 
 
-float CPegasusPPBA::getVoltage()
+float CPegasusPPBAPower::getVoltage()
 {
     return m_globalStatus.fVoltage;
 }
 
-float CPegasusPPBA::getCurrent()
+float CPegasusPPBAPower::getCurrent()
 {
     getPowerData();
     return m_globalStatus.fAverageAmps;
 }
 
-float CPegasusPPBA::getTemp()
+float CPegasusPPBAPower::getTemp()
 {
     return m_globalStatus.fTemp;
 }
 
-int CPegasusPPBA::getHumidity()
+int CPegasusPPBAPower::getHumidity()
 {
     return m_globalStatus.nHumidity;
 }
 
-float CPegasusPPBA::getDewPoint()
+float CPegasusPPBAPower::getDewPoint()
 {
     return m_globalStatus.fDewPoint;
 
 }
 
-bool CPegasusPPBA::getPortOn(const int &nPortNumber)
+bool CPegasusPPBAPower::getPortOn(const int &nPortNumber)
 {
     switch(nPortNumber) {
         case 1:
-            return m_globalStatus.bQuadPortOn;
+            getConsolidatedStatus();
+           return m_globalStatus.bQuadPortOn;
             break;
 
         case 2:
+            getConsolidatedStatus();
             return m_globalStatus.bAdjPortOn;
             break;
 
         case 3:
+            getConsolidatedStatus();
             if(m_globalStatus.bAutoDew)
                 return true;
             return m_bPWMA_On;
             break;
 
         case 4:
+            getConsolidatedStatus();
             if(m_globalStatus.bAutoDew)
                 return true;
             return m_bPWMB_On;
@@ -444,7 +455,7 @@ bool CPegasusPPBA::getPortOn(const int &nPortNumber)
     }
 }
 
-int CPegasusPPBA::setPortOn(const int &nPortNumber, const bool &bEnabled)
+int CPegasusPPBAPower::setPortOn(const int &nPortNumber, const bool &bEnabled)
 {
     int nErr = PLUGIN_OK;
     char szCmd[SERIAL_BUFFER_SIZE];
@@ -457,8 +468,8 @@ int CPegasusPPBA::setPortOn(const int &nPortNumber, const bool &bEnabled)
     ltime = time(NULL);
     timestamp = asctime(localtime(&ltime));
     timestamp[strlen(timestamp) - 1] = 0;
-    fprintf(Logfile, "[%s] [CPegasusPPBA::setPortOn] nPortNumber = %d\n", timestamp, nPortNumber);
-    fprintf(Logfile, "[%s] [CPegasusPPBA::setPortOn] bEnabled = %s\n", timestamp, bEnabled?"On":"Off");
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::setPortOn] nPortNumber = %d\n", timestamp, nPortNumber);
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::setPortOn] bEnabled = %s\n", timestamp, bEnabled?"On":"Off");
     fflush(Logfile);
 #endif
 
@@ -496,11 +507,12 @@ int CPegasusPPBA::setPortOn(const int &nPortNumber, const bool &bEnabled)
             break;
     }
 
+    getConsolidatedStatus();
     return nErr;
 }
 
 
-int CPegasusPPBA::getOnBootPowerState()
+int CPegasusPPBAPower::getOnBootPowerState()
 {
     int nErr = PLUGIN_OK;
     char szResp[SERIAL_BUFFER_SIZE];
@@ -528,15 +540,15 @@ int CPegasusPPBA::getOnBootPowerState()
     ltime = time(NULL);
     timestamp = asctime(localtime(&ltime));
     timestamp[strlen(timestamp) - 1] = 0;
-    fprintf(Logfile, "[%s] [CPegasusPPBA::getOnBootPowerState] bQuadPortOn = %s\n", timestamp, m_globalStatus.bQuadPortOn?"Yes":"No");
-    fprintf(Logfile, "[%s] [CPegasusPPBA::getOnBootPowerState] bAdjPortOn = %s\n", timestamp, m_globalStatus.bAdjPortOn?"Yes":"No");
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getOnBootPowerState] bQuadPortOn = %s\n", timestamp, m_globalStatus.bQuadPortOn?"Yes":"No");
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getOnBootPowerState] bAdjPortOn = %s\n", timestamp, m_globalStatus.bAdjPortOn?"Yes":"No");
     fflush(Logfile);
 #endif
     
     return nErr;
 }
 
-bool CPegasusPPBA::getOnBootPortOn(const int &nPortNumber)
+bool CPegasusPPBAPower::getOnBootPortOn(const int &nPortNumber)
 {
     getOnBootPowerState();
     
@@ -556,7 +568,7 @@ bool CPegasusPPBA::getOnBootPortOn(const int &nPortNumber)
 }
 
 
-int CPegasusPPBA::setOnBootPortOn(const int &nPortNumber, const bool &bEnable)
+int CPegasusPPBAPower::setOnBootPortOn(const int &nPortNumber, const bool &bEnable)
 {
     int nErr = PLUGIN_OK;
     char szCmd[SERIAL_BUFFER_SIZE];
@@ -592,7 +604,7 @@ int CPegasusPPBA::setOnBootPortOn(const int &nPortNumber, const bool &bEnable)
 }
 
 
-int CPegasusPPBA::setDewHeaterPWM(const int &nDewHeater, const int &nPWM)
+int CPegasusPPBAPower::setDewHeaterPWM(const int &nDewHeater, const int &nPWM)
 {
     int nErr = PLUGIN_OK;
     char szCmd[SERIAL_BUFFER_SIZE];
@@ -619,7 +631,7 @@ int CPegasusPPBA::setDewHeaterPWM(const int &nDewHeater, const int &nPWM)
     return nErr;
 }
 
-int CPegasusPPBA::getDewHeaterPWM(const int &nDewHeater)
+int CPegasusPPBAPower::getDewHeaterPWM(const int &nDewHeater)
 {
     switch(nDewHeater) {
         case PWMA:
@@ -634,7 +646,7 @@ int CPegasusPPBA::getDewHeaterPWM(const int &nDewHeater)
     }
 }
 
-int CPegasusPPBA::setDewHeaterPWMVal(const int &nDewHeater, const int &nPWM)
+int CPegasusPPBAPower::setDewHeaterPWMVal(const int &nDewHeater, const int &nPWM)
 {
     int nErr = PLUGIN_OK;
     bool bOn = false;
@@ -658,7 +670,7 @@ int CPegasusPPBA::setDewHeaterPWMVal(const int &nDewHeater, const int &nPWM)
 }
 
 
-int CPegasusPPBA::setAutoDewOn(const bool &bOn)
+int CPegasusPPBAPower::setAutoDewOn(const bool &bOn)
 {
     int nErr = PLUGIN_OK;
     char szCmd[SERIAL_BUFFER_SIZE];
@@ -679,7 +691,7 @@ int CPegasusPPBA::setAutoDewOn(const bool &bOn)
     ltime = time(NULL);
     timestamp = asctime(localtime(&ltime));
     timestamp[strlen(timestamp) - 1] = 0;
-    fprintf(Logfile, "[%s] CPegasusPPBA::setAutoDewOn  m_globalStatus.bAutoDew : %s\n", timestamp, m_globalStatus.bAutoDew?"Yes":"No");
+    fprintf(Logfile, "[%s] CPegasusPPBAPower::setAutoDewOn  m_globalStatus.bAutoDew : %s\n", timestamp, m_globalStatus.bAutoDew?"Yes":"No");
     fflush(Logfile);
 #endif
     getConsolidatedStatus();
@@ -687,19 +699,19 @@ int CPegasusPPBA::setAutoDewOn(const bool &bOn)
 }
 
 
-bool CPegasusPPBA::isAutoDewOn()
+bool CPegasusPPBAPower::isAutoDewOn()
 {
 #ifdef PLUGIN_DEBUG
     ltime = time(NULL);
     timestamp = asctime(localtime(&ltime));
     timestamp[strlen(timestamp) - 1] = 0;
-    fprintf(Logfile, "[%s] CPegasusPPBA::isAutoDewOn  m_globalStatus.bAutoDew : %s\n", timestamp, m_globalStatus.bAutoDew?"Yes":"No");
+    fprintf(Logfile, "[%s] CPegasusPPBAPower::isAutoDewOn  m_globalStatus.bAutoDew : %s\n", timestamp, m_globalStatus.bAutoDew?"Yes":"No");
     fflush(Logfile);
 #endif
     return m_globalStatus.bAutoDew;
 }
 
-int CPegasusPPBA::getAutoDewAggressivness(int &nLevel)
+int CPegasusPPBAPower::getAutoDewAggressivness(int &nLevel)
 {
     int nErr = PLUGIN_OK;
     char szResp[SERIAL_BUFFER_SIZE];
@@ -723,8 +735,8 @@ int CPegasusPPBA::getAutoDewAggressivness(int &nLevel)
     ltime = time(NULL);
     timestamp = asctime(localtime(&ltime));
     timestamp[strlen(timestamp) - 1] = 0;
-    //fprintf(Logfile, "[%s] [CPegasusPPBA::getAutoDewAggressivness] sParsedResp[1] : %s\n", timestamp, sParsedResp[1].c_str());
-    fprintf(Logfile, "[%s] [CPegasusPPBA::getAutoDewAggressivness] m_nAutoDewAgressiveness : %d\n", timestamp, m_nAutoDewAgressiveness);
+    //fprintf(Logfile, "[%s] [CPegasusPPBAPower::getAutoDewAggressivness] sParsedResp[1] : %s\n", timestamp, sParsedResp[1].c_str());
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getAutoDewAggressivness] m_nAutoDewAgressiveness : %d\n", timestamp, m_nAutoDewAgressiveness);
     fflush(Logfile);
 #endif
 
@@ -732,7 +744,7 @@ int CPegasusPPBA::getAutoDewAggressivness(int &nLevel)
     return nErr;
 }
 
-int CPegasusPPBA::setAutoDewAggressivness(int nLevel)
+int CPegasusPPBAPower::setAutoDewAggressivness(int nLevel)
 {
     int nErr = PLUGIN_OK;
     char szCmd[SERIAL_BUFFER_SIZE];
@@ -752,12 +764,12 @@ int CPegasusPPBA::setAutoDewAggressivness(int nLevel)
     return nErr;
 }
 
-int CPegasusPPBA::getAdjVoltage()
+int CPegasusPPBAPower::getAdjVoltage()
 {
     return m_globalStatus.AdjPortVolts;
 }
 
-int CPegasusPPBA::setAdjVoltage(int nVolt)
+int CPegasusPPBAPower::setAdjVoltage(int nVolt)
 {
     int nErr = PLUGIN_OK;
     char szCmd[SERIAL_BUFFER_SIZE];
@@ -772,12 +784,12 @@ int CPegasusPPBA::setAdjVoltage(int nVolt)
     return nErr;
 }
 
-int CPegasusPPBA::getPortCount()
+int CPegasusPPBAPower::getPortCount()
 {
     return NB_PORTS;
 }
 
-int CPegasusPPBA::getPower(float &fAverageAmps, float &fAmpHours, float &fWattHours, unsigned long &nUptimeMs)
+int CPegasusPPBAPower::getPower(float &fAverageAmps, float &fAmpHours, float &fWattHours, unsigned long &nUptimeMs)
 {
     int nErr = PLUGIN_OK;
     
@@ -792,7 +804,7 @@ int CPegasusPPBA::getPower(float &fAverageAmps, float &fAmpHours, float &fWattHo
     return nErr;
 }
 
-int CPegasusPPBA::getPowerMetric(float &fTotalAmps, float &fAmpsQuad, float &fAmpsDewA, float &fAmpsDewB)
+int CPegasusPPBAPower::getPowerMetric(float &fTotalAmps, float &fAmpsQuad, float &fAmpsDewA, float &fAmpsDewB)
 {
     int nErr = PLUGIN_OK;
     
@@ -807,7 +819,7 @@ int CPegasusPPBA::getPowerMetric(float &fTotalAmps, float &fAmpsQuad, float &fAm
     return nErr;
 }
 
-int CPegasusPPBA::getPowerData()
+int CPegasusPPBAPower::getPowerData()
 {
     int nErr;
     char szResp[SERIAL_BUFFER_SIZE];
@@ -821,7 +833,7 @@ int CPegasusPPBA::getPowerData()
         ltime = time(NULL);
         timestamp = asctime(localtime(&ltime));
         timestamp[strlen(timestamp) - 1] = 0;
-        fprintf(Logfile, "[%s] [CPegasusPPBA::getPower] ERROR = %d\n", timestamp, nErr);
+        fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPower] ERROR = %d\n", timestamp, nErr);
         fflush(Logfile);
 #endif
         return nErr;
@@ -834,7 +846,7 @@ int CPegasusPPBA::getPowerData()
         ltime = time(NULL);
         timestamp = asctime(localtime(&ltime));
         timestamp[strlen(timestamp) - 1] = 0;
-        fprintf(Logfile, "[%s] [CPegasusPPBA::getPower] parse error = %d\n", timestamp, nErr);
+        fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPower] parse error = %d\n", timestamp, nErr);
         fflush(Logfile);
 #endif
         return nErr;
@@ -845,7 +857,7 @@ int CPegasusPPBA::getPowerData()
         ltime = time(NULL);
         timestamp = asctime(localtime(&ltime));
         timestamp[strlen(timestamp) - 1] = 0;
-        fprintf(Logfile, "[%s] [CPegasusPPBA::getPower]  parsing returned an incomplete answer\n", timestamp);
+        fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPower]  parsing returned an incomplete answer\n", timestamp);
         fflush(Logfile);
 #endif
         return PPB_BAD_CMD_RESPONSE;
@@ -860,17 +872,17 @@ int CPegasusPPBA::getPowerData()
     ltime = time(NULL);
     timestamp = asctime(localtime(&ltime));
     timestamp[strlen(timestamp) - 1] = 0;
-    fprintf(Logfile, "[%s] [CPegasusPPBA::getPower] fAverageAmps = %3.2f\n", timestamp, m_globalStatus.fAverageAmps);
-    fprintf(Logfile, "[%s] [CPegasusPPBA::getPower] fAmpHours = %3.2f\n", timestamp, m_globalStatus.fAmpHours);
-    fprintf(Logfile, "[%s] [CPegasusPPBA::getPower] fWattHours = %3.2f\n", timestamp, m_globalStatus.fWattHours);
-    fprintf(Logfile, "[%s] [CPegasusPPBA::getPower] nUptimeMs = %d\n", timestamp, m_globalStatus.nUptimeMs);
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPower] fAverageAmps = %3.2f\n", timestamp, m_globalStatus.fAverageAmps);
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPower] fAmpHours = %3.2f\n", timestamp, m_globalStatus.fAmpHours);
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPower] fWattHours = %3.2f\n", timestamp, m_globalStatus.fWattHours);
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPower] nUptimeMs = %d\n", timestamp, m_globalStatus.nUptimeMs);
     fflush(Logfile);
 #endif
 
     return nErr;
 }
 
-int CPegasusPPBA::getPowerMetricData()
+int CPegasusPPBAPower::getPowerMetricData()
 {
     int nErr;
     char szResp[SERIAL_BUFFER_SIZE];
@@ -885,7 +897,7 @@ int CPegasusPPBA::getPowerMetricData()
         ltime = time(NULL);
         timestamp = asctime(localtime(&ltime));
         timestamp[strlen(timestamp) - 1] = 0;
-        fprintf(Logfile, "[%s] [CPegasusPPBA::getPower] ERROR = %d\n", timestamp, nErr);
+        fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPower] ERROR = %d\n", timestamp, nErr);
         fflush(Logfile);
 #endif
         return nErr;
@@ -898,7 +910,7 @@ int CPegasusPPBA::getPowerMetricData()
         ltime = time(NULL);
         timestamp = asctime(localtime(&ltime));
         timestamp[strlen(timestamp) - 1] = 0;
-        fprintf(Logfile, "[%s] [CPegasusPPBA::getPower] parse error = %d\n", timestamp, nErr);
+        fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPower] parse error = %d\n", timestamp, nErr);
         fflush(Logfile);
 #endif
         return nErr;
@@ -909,7 +921,7 @@ int CPegasusPPBA::getPowerMetricData()
         ltime = time(NULL);
         timestamp = asctime(localtime(&ltime));
         timestamp[strlen(timestamp) - 1] = 0;
-        fprintf(Logfile, "[%s] [CPegasusPPBA::getPower]  parsing returned an incomplete answer\n", timestamp);
+        fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPower]  parsing returned an incomplete answer\n", timestamp);
         fflush(Logfile);
 #endif
         return PPB_BAD_CMD_RESPONSE;
@@ -924,10 +936,10 @@ int CPegasusPPBA::getPowerMetricData()
     ltime = time(NULL);
     timestamp = asctime(localtime(&ltime));
     timestamp[strlen(timestamp) - 1] = 0;
-    fprintf(Logfile, "[%s] [CPegasusPPBA::getPower] fTotalAmps = %3.2f\n", timestamp, m_globalStatus.fTotalAmps);
-    fprintf(Logfile, "[%s] [CPegasusPPBA::getPower] fAmpsQuad = %3.2f\n", timestamp, m_globalStatus.fAmpsQuad);
-    fprintf(Logfile, "[%s] [CPegasusPPBA::getPower] fAmpsDewA = %3.2f\n", timestamp, m_globalStatus.fAmpsDewA);
-    fprintf(Logfile, "[%s] [CPegasusPPBA::getPower] fAmpsDewB = %3.2f\n", timestamp, m_globalStatus.fAmpsDewB);
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPower] fTotalAmps = %3.2f\n", timestamp, m_globalStatus.fTotalAmps);
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPower] fAmpsQuad = %3.2f\n", timestamp, m_globalStatus.fAmpsQuad);
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPower] fAmpsDewA = %3.2f\n", timestamp, m_globalStatus.fAmpsDewA);
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::getPower] fAmpsDewB = %3.2f\n", timestamp, m_globalStatus.fAmpsDewB);
     fflush(Logfile);
 #endif
     
@@ -937,7 +949,7 @@ int CPegasusPPBA::getPowerMetricData()
 
 #pragma mark command and response functions
 
-int CPegasusPPBA::ppbCommand(const char *pszszCmd, char *pszResult, unsigned long nResultMaxLen)
+int CPegasusPPBAPower::ppbCommand(const char *pszszCmd, char *pszResult, unsigned long nResultMaxLen)
 {
     int nErr = PLUGIN_OK;
     char szResp[SERIAL_BUFFER_SIZE];
@@ -951,7 +963,7 @@ int CPegasusPPBA::ppbCommand(const char *pszszCmd, char *pszResult, unsigned lon
 	ltime = time(NULL);
 	timestamp = asctime(localtime(&ltime));
 	timestamp[strlen(timestamp) - 1] = 0;
-	fprintf(Logfile, "[%s] CPegasusPPBA::ppbCommand Sending %s\n", timestamp, pszszCmd);
+	fprintf(Logfile, "[%s] CPegasusPPBAPower::ppbCommand Sending %s\n", timestamp, pszszCmd);
 	fflush(Logfile);
 #endif
     nErr = m_pSerx->writeFile((void *)pszszCmd, strlen(pszszCmd), ulBytesWrite);
@@ -968,7 +980,7 @@ int CPegasusPPBA::ppbCommand(const char *pszszCmd, char *pszResult, unsigned lon
         ltime = time(NULL);
         timestamp = asctime(localtime(&ltime));
         timestamp[strlen(timestamp) - 1] = 0;
-        fprintf(Logfile, "[%s] CPegasusPPBA::ppbCommand response \"%s\"\n", timestamp, szResp);
+        fprintf(Logfile, "[%s] CPegasusPPBAPower::ppbCommand response \"%s\"\n", timestamp, szResp);
         fflush(Logfile);
 #endif
         if(nErr){
@@ -979,14 +991,14 @@ int CPegasusPPBA::ppbCommand(const char *pszszCmd, char *pszResult, unsigned lon
 		ltime = time(NULL);
 		timestamp = asctime(localtime(&ltime));
 		timestamp[strlen(timestamp) - 1] = 0;
-		fprintf(Logfile, "[%s] CPegasusPPBA::ppbCommand response copied to pszResult : \"%s\"\n", timestamp, pszResult);
+		fprintf(Logfile, "[%s] CPegasusPPBAPower::ppbCommand response copied to pszResult : \"%s\"\n", timestamp, pszResult);
 		fflush(Logfile);
 #endif
     }
     return nErr;
 }
 
-int CPegasusPPBA::readResponse(char *pszRespBuffer, unsigned long nBufferLen)
+int CPegasusPPBAPower::readResponse(char *pszRespBuffer, unsigned long nBufferLen)
 {
     int nErr = PLUGIN_OK;
     unsigned long ulBytesRead = 0;
@@ -1010,7 +1022,7 @@ int CPegasusPPBA::readResponse(char *pszRespBuffer, unsigned long nBufferLen)
 			ltime = time(NULL);
 			timestamp = asctime(localtime(&ltime));
 			timestamp[strlen(timestamp) - 1] = 0;
-			fprintf(Logfile, "[%s] CPegasusPPBA::readResponse timeout\n", timestamp);
+			fprintf(Logfile, "[%s] CPegasusPPBAPower::readResponse timeout\n", timestamp);
 			fflush(Logfile);
 #endif
             nErr = ERR_NORESPONSE;
@@ -1027,7 +1039,7 @@ int CPegasusPPBA::readResponse(char *pszRespBuffer, unsigned long nBufferLen)
 }
 
 
-int CPegasusPPBA::parseResp(char *pszResp, std::vector<std::string>  &svParsedResp)
+int CPegasusPPBAPower::parseResp(char *pszResp, std::vector<std::string>  &svParsedResp)
 {
     std::string sSegment;
     std::vector<std::string> svSeglist;
@@ -1037,7 +1049,7 @@ int CPegasusPPBA::parseResp(char *pszResp, std::vector<std::string>  &svParsedRe
 	ltime = time(NULL);
 	timestamp = asctime(localtime(&ltime));
 	timestamp[strlen(timestamp) - 1] = 0;
-	fprintf(Logfile, "[%s] CPegasusPPBA::parseResp parsing \"%s\"\n", timestamp, pszResp);
+	fprintf(Logfile, "[%s] CPegasusPPBAPower::parseResp parsing \"%s\"\n", timestamp, pszResp);
 	fflush(Logfile);
 #endif
 	svParsedResp.clear();
@@ -1049,7 +1061,7 @@ int CPegasusPPBA::parseResp(char *pszResp, std::vector<std::string>  &svParsedRe
         ltime = time(NULL);
         timestamp = asctime(localtime(&ltime));
         timestamp[strlen(timestamp) - 1] = 0;
-        fprintf(Logfile, "[%s] CPegasusPPBA::parseResp sSegment : %s\n", timestamp, sSegment.c_str());
+        fprintf(Logfile, "[%s] CPegasusPPBAPower::parseResp sSegment : %s\n", timestamp, sSegment.c_str());
         fflush(Logfile);
 #endif
     }

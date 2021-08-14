@@ -15,24 +15,24 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\main.h">
+    <ClInclude Include="..\powerMain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\x2powercontrol.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\pegasus_PPBA.h">
+    <ClInclude Include="..\pegasus_PPBAPower.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\main.cpp">
+    <ClCompile Include="..\powerMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\x2powercontrol.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\pegasus_PPBA.cpp">
+    <ClCompile Include="..\pegasus_PPBAPower.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

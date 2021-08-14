@@ -1,4 +1,4 @@
-#include "main.h"
+#include "powerMain.h"
 
 extern "C" PlugInExport int sbPlugInName2(BasicStringInterface& str)
 {

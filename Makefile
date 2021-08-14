@@ -1,4 +1,4 @@
-# Makefile for libPegasusPPBA
+# Makefile for libPegasusPPBAPower and libPegasusPPBAExtFocuser
 
 CC = gcc
 CFLAGS = -fPIC -Wall -Wextra -O2 -g -DSB_LINUX_BUILD -I. -I./../../
@@ -6,21 +6,34 @@ CPPFLAGS = -std=c++17 -fPIC -Wall -Wextra -O2 -g -DSB_LINUX_BUILD -I. -I./../../
 LDFLAGS = -shared -lstdc++
 RM = rm -f
 STRIP = strip
-TARGET_LIB = libPegasusPPBA.so
+TARGET_LIBFocuser = libPegasusPPBAExtFocuser.so
+TARGET_LIBPower = libPegasusPPBAPower.so
 
-SRCS = main.cpp pegasus_PPBA.cpp x2powercontrol.cpp
-OBJS = $(SRCS:.cpp=.o)
+SRCS_Focuser = focuserMain.cpp pegasus_ppbaExtFocuser.cpp x2focuser.cpp x2powercontrol.cpp pegasus_PPBAPower.cpp
+SRCS_Power = powerMain.cpp pegasus_PPBAPower.cpp x2powercontrol.cpp x2focuser.cpp pegasus_ppbaExtFocuser.cpp
+
+OBJS_Focuser = $(SRCS_Focuser:.cpp=.o)
+OBJS_Power = $(SRCS_Power:.cpp=.o)
 
 .PHONY: all
-all: ${TARGET_LIB}
+all: ${TARGET_LIBFocuser} ${TARGET_LIBPower}
+power : ${TARGET_LIBPower}
+focuser : ${TARGET_LIBFocuser}
 
-$(TARGET_LIB): $(OBJS)
+$(TARGET_LIBFocuser): $(OBJS_Focuser)
 	$(CC) ${LDFLAGS} -o $@ $^
 	$(STRIP) $@ >/dev/null 2>&1  || true
 
-$(SRCS:.cpp=.d):%.d:%.cpp
+$(TARGET_LIBPower): $(OBJS_Power)
+	$(CC) ${LDFLAGS} -o $@ $^
+	$(STRIP) $@ >/dev/null 2>&1  || true
+
+$(SRCS_Focuser:.cpp=.d):%.d:%.cpp
+	$(CC) $(CFLAGS) $(CPPFLAGS) -MM $< >$@
+
+$(SRCS_Power:.cpp=.d):%.d:%.cpp
 	$(CC) $(CFLAGS) $(CPPFLAGS) -MM $< >$@
 
 .PHONY: clean
 clean:
-	${RM} ${TARGET_LIB} ${OBJS} *.d
+	${RM} ${TARGET_LIBFocuser} ${TARGET_LIBPower} *.o *.d
