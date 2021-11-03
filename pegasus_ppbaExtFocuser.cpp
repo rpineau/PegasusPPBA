@@ -305,6 +305,9 @@ int CPegasusPPBA_EXTFocuser::getStatus()
         if(sResp.find("PPBA")!=-1) {
             nDeviceType = PPBA_EXT_FOC;
         }
+        else if(sResp.find("PPBM")!=-1) {
+            nDeviceType = PPBA_EXT_FOC;
+        }
         else {
             nDeviceType = NONE_FOC;
             return ERR_DEVICENOTSUPPORTED;

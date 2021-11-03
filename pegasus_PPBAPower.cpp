@@ -167,6 +167,9 @@ int CPegasusPPBAPower::getStatus(int &nStatus)
         if(strstr(szResp,"PPBA")) {
             m_globalStatus.nDeviceType = PPBA;
         }
+        else if(strstr(szResp,"PPBM")) {
+            m_globalStatus.nDeviceType = PPBA;
+        }
         else {
             nStatus = PPB_BAD_CMD_RESPONSE;
             m_globalStatus.nDeviceType = NONE;
