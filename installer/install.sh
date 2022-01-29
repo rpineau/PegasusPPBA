@@ -39,6 +39,7 @@ echo "Installing in $TheSkyX_Path/$PLUGINS_DIR/PowerControlPlugIns/"
 
 mkdir -p "$TheSkyX_Path/Resources/Common/$PLUGINS_DIR/PowerControlPlugIns"
 cp "./powercontrollist PegasusPPBA.txt" "$TheSkyX_Path/Resources/Common/Miscellaneous Files/"
+cp "./PegasusAstro.png" "$TheSkyX_Path/Resources/Common/$PLUGINS_DIR/PowerControlPlugIns/"
 cp "./PegasusPPBA.ui" "$TheSkyX_Path/Resources/Common/$PLUGINS_DIR/PowerControlPlugIns/"
 cp "./libPegasusPPBAPower.so" "$TheSkyX_Path/Resources/Common/$PLUGINS_DIR/PowerControlPlugIns/"
 
@@ -61,5 +62,5 @@ if [ ! -z "$app_owner" ]; then
 	chown $app_owner "$TheSkyX_Path/Resources/Common/$PLUGINS_DIR/FocuserPlugIns/PegasusAstro.png"
 	chown $app_owner "$TheSkyX_Path/Resources/Common/$PLUGINS_DIR/FocuserPlugIns/libPegasusPPBAExtFocuser.so"
 fi
-chmod  755 "$TheSkyX_Path/Resources/Common/$PLUGINS_DIR/PowerControlPlugIns/libPegasusPPBA.so"
+chmod  755 "$TheSkyX_Path/Resources/Common/$PLUGINS_DIR/PowerControlPlugIns/libPegasusPPBAPower.so"
 chmod  755 "$TheSkyX_Path/Resources/Common/$PLUGINS_DIR/FocuserPlugIns/libPegasusPPBAExtFocuser.so"
