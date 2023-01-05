@@ -167,6 +167,9 @@ int CPegasusPPBAPower::getStatus(int &nStatus)
         if(strstr(szResp,"PPBA")) {
             m_globalStatus.nDeviceType = PPBA;
         }
+        else if(strstr(szResp,"PPBM")) {
+            m_globalStatus.nDeviceType = PPBA;
+        }
         else {
             nStatus = PPB_BAD_CMD_RESPONSE;
             m_globalStatus.nDeviceType = NONE;
@@ -755,7 +758,6 @@ int CPegasusPPBAPower::getAutoDewAggressivness(int &nLevel)
     ltime = time(NULL);
     timestamp = asctime(localtime(&ltime));
     timestamp[strlen(timestamp) - 1] = 0;
-    //fprintf(Logfile, "[%s] [CPegasusPPBAPower::getAutoDewAggressivness] sParsedResp[1] : %s\n", timestamp, sParsedResp[1].c_str());
     fprintf(Logfile, "[%s] [CPegasusPPBAPower::getAutoDewAggressivness] m_nAutoDewAgressiveness : %d\n", timestamp, m_nAutoDewAgressiveness);
     fflush(Logfile);
 #endif

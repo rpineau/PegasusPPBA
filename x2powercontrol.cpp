@@ -18,6 +18,7 @@ X2PowerControl::X2PowerControl(const char* pszDisplayName,
 	m_pSleeper = pSleeperIn;
 	m_pIniUtil = pIniUtilIn;
 	m_pTickCount = pTickCountIn;
+    m_pLogger = pLoggerIn;
 
 	m_nISIndex = nInstanceIndex;
 
