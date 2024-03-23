@@ -44,9 +44,8 @@ CPegasusPPBAPower::CPegasusPPBAPower()
     ltime = time(NULL);
     timestamp = asctime(localtime(&ltime));
     timestamp[strlen(timestamp) - 1] = 0;
-    fprintf(Logfile, "[%s] [CPegasusPPBAPower::CPegasusPPBAPower] version %3.2f build 2021_08_13_2000.\n", timestamp, DRIVER_VERSION);
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::CPegasusPPBAPower] version %3.2f build %s %s .\n", timestamp, DRIVER_VERSION, __DATE__, __TIME__);
     fprintf(Logfile, "[%s] [CPegasusPPBAPower::CPegasusPPBAPower] Constructor Called.\n", timestamp);
-
     fflush(Logfile);
 #endif
 
@@ -604,7 +603,7 @@ int CPegasusPPBAPower::setOnBootPortOn(const int &nPortNumber, const bool &bEnab
             break;
     }
 
-    sPorts.empty();
+    sPorts.clear();
     sPorts += m_globalStatus.bQuadPortOn? "1" : "0";
     sPorts += m_globalStatus.bAdjPortOn? "1" : "0";
     sPorts += "0";
@@ -1110,4 +1109,17 @@ int CPegasusPPBAPower::parseResp(char *pszResp, std::vector<std::string>  &svPar
 
 
     return PLUGIN_OK;
+}
+
+
+void CPegasusPPBAPower::log(std::string sLog)
+{
+#ifdef PLUGIN_DEBUG
+    ltime = time(NULL);
+    timestamp = asctime(localtime(&ltime));
+    timestamp[strlen(timestamp) - 1] = 0;
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::log] %s\n", timestamp, sLog.c_str());
+    fflush(Logfile);
+#endif
+
 }

@@ -31,6 +31,7 @@
 
 
 // Forward declare the interfaces that this device is dependent upon
+class X2PowerControl;
 class SerXInterface;
 class TheSkyXFacadeForDriversInterface;
 class SleeperInterface;
@@ -39,7 +40,7 @@ class LoggerInterface;
 class MutexInterface;
 class BasicIniUtilInterface;
 class TickCountInterface;
-
+class MultiConnectionDeviceInterface;
 
 
 #define PARENT_KEY_FOC			"PegasusUPBv2Focuser"
@@ -51,19 +52,13 @@ class TickCountInterface;
 #if defined(SB_WIN_BUILD)
 #define DEF_PORT_NAME_FOC       "COM1"
 #elif defined(SB_MAC_BUILD)
-#define DEF_PORT_NAME_FOC       "/dev/cu.KeySerial1"
+#define DEF_PORT_NAME_FOC       "/dev/cu.Bluetooth-Incoming-Port"
 #elif defined(SB_LINUX_BUILD)
 #define DEF_PORT_NAME_FOC       "/dev/ttyUSB0"
 #endif
 
-/*!
-\brief The X2Focuser example.
 
-\ingroup Example
-
-Use this example to write an X2Focuser driver.
-*/
-class X2FocuserExt : public FocuserDriverInterface, public SerialPortParams2Interface, public ModalSettingsDialogInterface, public X2GUIEventInterface, public FocuserTemperatureInterface , public MultiConnectionDeviceInterface
+class __attribute__((weak,visibility("default"))) X2FocuserExt : public FocuserDriverInterface, public MultiConnectionDeviceInterface, public SerialPortParams2Interface, public ModalSettingsDialogInterface, public X2GUIEventInterface, public FocuserTemperatureInterface
 {
 public:
     X2FocuserExt(const char                        *pszDisplayName,
@@ -186,6 +181,5 @@ private:
     bool                                    m_bReverseEnabled;
 
 };
-
 
 #endif // X2FocuserExt

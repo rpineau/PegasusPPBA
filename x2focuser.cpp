@@ -25,7 +25,6 @@ X2FocuserExt::X2FocuserExt(const char* pszDisplayName,
     m_PegasusPPBAExtFoc.SetSerxPointer(pSerXIn);
 
     m_PegasusPPBAExtFoc.setLogger(m_pLogger);
-    m_PegasusPPBAExtFoc.setSleeper(m_pSleeper);
 
 	m_bLinked = false;
 	m_nPosition = 0;
@@ -90,8 +89,14 @@ int	X2FocuserExt::queryAbstraction(const char* pszName, void** ppVal)
     else if (!strcmp(pszName, SerialPortParams2Interface_Name))
         *ppVal = dynamic_cast<SerialPortParams2Interface*>(this);
 
-    else if (!strcmp(pszName, MultiConnectionDeviceInterface_Name))
+    else if (!strcmp(pszName, MultiConnectionDeviceInterface_Name)) {
         *ppVal = dynamic_cast<MultiConnectionDeviceInterface*>(this);
+#ifdef PLUGIN_DEBUG_PPBA_EXT_FOC
+        auto i = reinterpret_cast<std::uintptr_t>(*ppVal);
+        m_PegasusPPBAExtFoc.log("[X2FocuserExt::queryAbstraction] MultiConnectionDeviceInterface_Name called");
+        m_PegasusPPBAExtFoc.log("[X2FocuserExt::queryAbstraction] ppVal = " + std::to_string(i));
+#endif
+    }
 
     return SB_OK;
 }
@@ -162,7 +167,9 @@ int	X2FocuserExt::establishLink(void)
 {
     char szPort[DRIVER_MAX_STRING];
     int err;
-
+#ifdef PLUGIN_DEBUG_PPBA_EXT_FOC
+    m_PegasusPPBAExtFoc.log("[X2FocuserExt::establishLink] called");
+#endif
     X2MutexLocker ml(GetMutex());
     // get serial port device name
     portNameOnToCharPtr(szPort,DRIVER_MAX_STRING);
@@ -564,17 +571,27 @@ void X2FocuserExt::portNameOnToCharPtr(char* pszPort, const int& nMaxSize) const
 
 int X2FocuserExt::deviceIdentifier(BasicStringInterface &sIdentifier)
 {
+#ifdef PLUGIN_DEBUG_PPBA_EXT_FOC
+    m_PegasusPPBAExtFoc.log("[X2FocuserExt::deviceIdentifier]");
+#endif
     sIdentifier = "PPBA_EXT";
     return SB_OK;
 }
 
 int X2FocuserExt::isConnectionPossible(const int &nPeerArraySize, MultiConnectionDeviceInterface **ppPeerArray, bool &bConnectionPossible)
 {
+#ifdef PLUGIN_DEBUG_PPBA_EXT_FOC
+    m_PegasusPPBAExtFoc.log("[X2FocuserExt::isConnectionPossible]");
+    m_PegasusPPBAExtFoc.log("[X2FocuserExt::isConnectionPossible] nPeerArraySize = " + std::to_string(nPeerArraySize));
+#endif
     for (int nIndex = 0; nIndex < nPeerArraySize; ++nIndex)
     {
         X2PowerControl *pPeer = dynamic_cast<X2PowerControl*>(ppPeerArray[nIndex]);
         if (pPeer == NULL)
         {
+#ifdef PLUGIN_DEBUG
+            m_PegasusPPBAExtFoc.log("[X2FocuserExt::isConnectionPossible] pPeer is NULL");
+#endif
             bConnectionPossible = false;
             return ERR_POINTER;
         }
@@ -587,6 +604,12 @@ int X2FocuserExt::isConnectionPossible(const int &nPeerArraySize, MultiConnectio
 
 int X2FocuserExt::useResource(MultiConnectionDeviceInterface *pPeer)
 {
+#ifdef PLUGIN_DEBUG_PPBA_EXT_FOC
+    m_PegasusPPBAExtFoc.log("[X2FocuserExt::useResource]");
+#endif
+    if(pPeer == NULL)
+        return ERR_POINTER;
+
     X2PowerControl *pFocuserPeer = dynamic_cast<X2PowerControl*>(pPeer);
     if (pFocuserPeer == NULL) {
         return ERR_POINTER; // Peer must be a power control  pointer
@@ -601,6 +624,11 @@ int X2FocuserExt::useResource(MultiConnectionDeviceInterface *pPeer)
 
 int X2FocuserExt::swapResource(MultiConnectionDeviceInterface *pPeer)
 {
+#ifdef PLUGIN_DEBUG_PPBA_EXT_FOC
+    m_PegasusPPBAExtFoc.log("[X2FocuserExt::swapResource]");
+#endif
+    if(pPeer == NULL)
+        return ERR_POINTER;
 
     X2PowerControl *pFocuserPeer = dynamic_cast<X2PowerControl*>(pPeer);
     if (pFocuserPeer == NULL) {

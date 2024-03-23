@@ -21,6 +21,20 @@
 #include "x2focuser.h"
 #include "pegasus_PPBAPower.h"
 
+
+// Forward declare the interfaces that this device is dependent upon
+class X2FocuserExt;
+class SerXInterface;
+class TheSkyXFacadeForDriversInterface;
+class SleeperInterface;
+class SimpleIniUtilInterface;
+class LoggerInterface;
+class MutexInterface;
+class BasicIniUtilInterface;
+class TickCountInterface;
+class MultiConnectionDeviceInterface;
+
+
 #define PARENT_KEY          "PA_PBBA"
 #define CHILD_KEY_PORTNAME    "PortName"
 
@@ -44,8 +58,7 @@
 #define DEF_PORT_NAME                    "/dev/ttyUSB0"
 #endif
 
-
- class X2PowerControl : public PowerControlDriverInterface, public ModalSettingsDialogInterface, public X2GUIEventInterface, public CircuitLabelsInterface, public SetCircuitLabelsInterface, public SerialPortParams2Interface, public MultiConnectionDeviceInterface
+class __attribute__((weak,visibility("default"))) X2PowerControl : public PowerControlDriverInterface, public MultiConnectionDeviceInterface,  public ModalSettingsDialogInterface, public X2GUIEventInterface, public CircuitLabelsInterface, public SetCircuitLabelsInterface, public SerialPortParams2Interface
 {
 public:
 	X2PowerControl( const char* pszDisplayName,

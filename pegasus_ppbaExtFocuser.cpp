@@ -17,7 +17,6 @@ CPegasusPPBA_EXTFocuser::CPegasusPPBA_EXTFocuser()
     
     m_pSerx = NULL;
     m_pLogger = NULL;
-    m_pSleeper = NULL;
 
     m_sFirmwareVersion.clear();
 
@@ -40,7 +39,7 @@ CPegasusPPBA_EXTFocuser::CPegasusPPBA_EXTFocuser()
     ltime = time(NULL);
     timestamp = asctime(localtime(&ltime));
     timestamp[strlen(timestamp) - 1] = 0;
-    fprintf(Logfile, "[%s] [CPegasusPPBA_EXTFocuser::CPegasusPPBA_EXTFocuser] version %3.2f build 2021_08_13_2000.\n", timestamp, DRIVER_VERSION_FOC);
+    fprintf(Logfile, "[%s] [CPegasusPPBA_EXTFocuser::CPegasusPPBA_EXTFocuser] version %3.2f build %s %s .\n", timestamp, DRIVER_VERSION_FOC, __DATE__, __TIME__);
     fprintf(Logfile, "[%s] [CPegasusPPBA_EXTFocuser::CPegasusPPBA_EXTFocuser] Constructor Called.\n", timestamp);
     fflush(Logfile);
 #endif
@@ -74,11 +73,10 @@ int CPegasusPPBA_EXTFocuser::Connect(const char *pszPort)
 
     // 9600 8N1
     if (!m_pSerx->isConnected()) {
-        // nErr = m_pSerx->open(pszPort, 9600, SerXInterface::B_NOPARITY, "-DTR_CONTROL 1");
-        nErr = m_pSerx->open(pszPort, 9600, SerXInterface::B_NOPARITY);
+        nErr = m_pSerx->open(pszPort, 9600, SerXInterface::B_NOPARITY, "-DTR_CONTROL 1");
         if(nErr == 0) {
             m_bIsConnected = true;
-            // m_pSleeper->sleep(1500);
+            std::this_thread::sleep_for(std::chrono::milliseconds(1500));
         }
         else
             m_bIsConnected = false;
@@ -320,8 +318,9 @@ int CPegasusPPBA_EXTFocuser::getStatus()
 
     // check if XS focuser is present
     nErr = pppaCommand("XS\n", sResp);
-    if(nErr)
+    if(nErr) {
         return nErr;
+    }
     parseResp(sResp, svParsedResp);
 
     if(svParsedResp.size()>1 && svParsedResp[1].find("200")!=-1) {
@@ -856,7 +855,7 @@ int CPegasusPPBA_EXTFocuser::readResponse(std::string &sResp, int nTimeout)
                 nErr = ERR_RXTIMEOUT;
                 break;
             }
-            m_pSleeper->sleep(MAX_READ_WAIT_TIMEOUT_FOC);
+            std::this_thread::sleep_for(std::chrono::milliseconds(MAX_READ_WAIT_TIMEOUT_FOC));
             continue;
         }
         nbTimeouts = 0;
@@ -911,7 +910,7 @@ int CPegasusPPBA_EXTFocuser::parseResp(std::string sResp, std::vector<std::strin
 
     sResp = trim(sResp,"!#\r\n");
     if(!sResp.size()) {
-#ifdef PLUGIN_DEBUG
+#ifdef PLUGIN_DEBUG_PPBA_EXT_FOC
         ltime = time(NULL);
         timestamp = asctime(localtime(&ltime));
         timestamp[strlen(timestamp) - 1] = 0;
@@ -931,7 +930,7 @@ int CPegasusPPBA_EXTFocuser::parseResp(std::string sResp, std::vector<std::strin
     }
 
     if(svFields.size()==0) {
-#ifdef PLUGIN_DEBUG
+#ifdef PLUGIN_DEBUG_PPBA_EXT_FOC
         ltime = time(NULL);
         timestamp = asctime(localtime(&ltime));
         timestamp[strlen(timestamp) - 1] = 0;
@@ -960,3 +959,14 @@ std::string& CPegasusPPBA_EXTFocuser::rtrim(std::string& str, const std::string&
     return str;
 }
 
+void CPegasusPPBA_EXTFocuser::log(std::string sLog)
+{
+#ifdef PLUGIN_DEBUG_PPBA_EXT_FOC
+    ltime = time(NULL);
+    timestamp = asctime(localtime(&ltime));
+    timestamp[strlen(timestamp) - 1] = 0;
+    fprintf(Logfile, "[%s] [CPegasusPPBA_EXTFocuser::log] %s'\n", timestamp, sLog.c_str());
+    fflush(Logfile);
+#endif
+
+}

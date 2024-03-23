@@ -22,9 +22,16 @@
 #include <vector>
 #include <sstream>
 #include <iostream>
+#include <iomanip>
+#include <fstream>
+#include <chrono>
+#include <thread>
+#include <ctime>
 #include <exception>
 #include <typeinfo>
 #include <stdexcept>
+
+
 
 #include "../../licensedinterfaces/sberrorx.h"
 #include "../../licensedinterfaces/serxinterface.h"
@@ -62,7 +69,6 @@ public:
     void        SetSerxPointer(SerXInterface *p) { m_pSerx = p; };
     void        getSerxPointer(SerXInterface *p) { p = m_pSerx; };
     void        setLogger(LoggerInterface *pLogger) { m_pLogger = pLogger; };
-    void        setSleeper(SleeperInterface *pSleeper) { m_pSleeper = pSleeper;};
 
     // move commands
     int         haltFocuser();
@@ -106,7 +112,8 @@ public:
     int         setMicrostepping(int nStepping);
 
     float       getTemp();
-
+    void        log(std::string sLog);
+    
 
 protected:
     int             pppaCommand(const char *pszCmd, std::string &sResp, int nTimeout = MAX_TIMEOUT_FOC);
@@ -119,7 +126,6 @@ protected:
 
     SerXInterface       *m_pSerx;
     LoggerInterface     *m_pLogger;
-    SleeperInterface    *m_pSleeper;
 
     bool            m_bDebugLog;
     bool            m_bIsConnected;

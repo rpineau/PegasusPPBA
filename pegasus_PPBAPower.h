@@ -162,6 +162,8 @@ public:
     int         getPowerMetric(float &fTotalAmps, float &fAmpsQuad, float &fAmpsDewA, float &fAmpsDewB);
     int         getPowerMetricData();
 
+    void        log(std::string sLog);
+
 protected:
 
     int             ppbCommand(const char *pszCmd, char *pszResult, unsigned long nResultMaxLen);
