@@ -56,14 +56,13 @@ class TickCountInterface;
 #define DEF_PORT_NAME_FOC       "/dev/ttyUSB0"
 #endif
 
-/*!
-\brief The X2Focuser example.
+#if defined(WIN32)
+#define __CLASS_ATTRIBUTE__(x)
+#else
+#define __CLASS_ATTRIBUTE__(x) __attribute__(x)
+#endif
 
-\ingroup Example
-
-Use this example to write an X2Focuser driver.
-*/
-class X2FocuserExt : public FocuserDriverInterface, public SerialPortParams2Interface, public ModalSettingsDialogInterface, public X2GUIEventInterface, public FocuserTemperatureInterface , public MultiConnectionDeviceInterface
+class __CLASS_ATTRIBUTE__((weak,visibility("default"))) X2FocuserExt : public FocuserDriverInterface, public SerialPortParams2Interface, public ModalSettingsDialogInterface, public X2GUIEventInterface, public FocuserTemperatureInterface , public MultiConnectionDeviceInterface
 {
 public:
     X2FocuserExt(const char                        *pszDisplayName,
