@@ -76,12 +76,17 @@ int CPegasusPPBAPower::Connect(const char *pszPort)
 	fflush(Logfile);
 #endif
 
-    // 9600 8N1
-    nErr = m_pSerx->open(pszPort, 9600, SerXInterface::B_NOPARITY, "-DTR_CONTROL 1");
-    if(nErr == 0)
-        m_bIsConnected = true;
-    else
-        m_bIsConnected = false;
+	// 9600 8N1
+	if (!m_pSerx->isConnected()) {
+		nErr = m_pSerx->open(pszPort, 9600, SerXInterface::B_NOPARITY);
+		if(nErr == 0) {
+			m_bIsConnected = true;
+		}
+		else
+			m_bIsConnected = false;
+	}
+	else
+		m_bIsConnected = true;
 
     if(!m_bIsConnected)
         return nErr;
@@ -604,7 +609,7 @@ int CPegasusPPBAPower::setOnBootPortOn(const int &nPortNumber, const bool &bEnab
             break;
     }
 
-    sPorts.empty();
+    sPorts.clear();
     sPorts += m_globalStatus.bQuadPortOn? "1" : "0";
     sPorts += m_globalStatus.bAdjPortOn? "1" : "0";
     sPorts += "0";
