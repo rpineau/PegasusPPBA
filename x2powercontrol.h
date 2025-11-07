@@ -36,6 +36,8 @@
 #define CHILD_KEY_PORT3_BOOT "PORT3_BOOT"
 #define CHILD_KEY_PORT4_BOOT "PORT4_BOOT"
 
+#define CHILD_KEY_USB2_NAME	"USB_PORT_NAME"
+
 #if defined(SB_WIN_BUILD)
 #define DEF_PORT_NAME                    "COM1"
 #elif defined(SB_MAC_BUILD)
@@ -158,7 +160,7 @@ private:
 	CPegasusPPBAPower	m_PowerPorts;
     
     std::vector<std::string>    m_sPortNames;
-    std::vector<std::string>    m_IniPortKey = {CHILD_KEY_PORT1_NAME, CHILD_KEY_PORT2_NAME, CHILD_KEY_PORT3_NAME, CHILD_KEY_PORT4_NAME};
+    std::vector<std::string>    m_IniPortKey = {CHILD_KEY_PORT1_NAME, CHILD_KEY_PORT2_NAME, CHILD_KEY_PORT3_NAME, CHILD_KEY_PORT4_NAME, CHILD_KEY_USB2_NAME};
 };
 
 #endif // __X2Power_H_

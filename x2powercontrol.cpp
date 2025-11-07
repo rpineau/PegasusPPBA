@@ -313,6 +313,7 @@ int X2PowerControl::execModalSettingsDialog()
                 dx->setCurrentIndex("comboBox", 0);
                 break;
         }
+
         bOn = m_PowerPorts.getOnBootPortOn(QUAD12);
         dx->setChecked("checkBox_5", bOn?1:0);
         bOn = m_PowerPorts.getOnBootPortOn(ADJ);
@@ -328,10 +329,18 @@ int X2PowerControl::execModalSettingsDialog()
                 break;
         }
     }
-    else {
-        dx->setEnabled("pushButton",false);
-        dx->setEnabled("pushButton_2",false);
-    }
+	else {
+		dx->setEnabled("pushButton",false);
+		dx->setEnabled("pushButton_2",false);
+
+		dx->setEnabled("groupBox_3",false);
+		dx->setEnabled("groupBox_6",false);
+		dx->setEnabled("groupBox_7",false);
+		dx->setEnabled("groupBox_2",false);
+
+		dx->setEnabled("radioButton",false);
+		dx->setEnabled("radioButton_2",false);
+	}
 
     //Display the user interface
     if ((nErr = ui->exec(bPressedOK)))
@@ -534,6 +543,10 @@ int X2PowerControl::circuitLabel(const int &nZeroBasedIndex, BasicStringInterfac
             case 3:
                 sLabel = "Dew Heater B";
                 break;
+
+			case 4:
+				sLabel = "USB2 ports";
+				break;
         }
 
         str = sLabel.c_str();

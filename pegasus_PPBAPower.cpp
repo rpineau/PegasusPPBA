@@ -13,9 +13,6 @@ CPegasusPPBAPower::CPegasusPPBAPower()
     m_globalStatus.bReady = false;
     memset(m_globalStatus.szVersion,0,TEXT_BUFFER_SIZE);
 
-    m_nTargetPos = 0;
-    m_nPosLimit = 0;
-    m_bPosLimitEnabled = false;
     m_bAbborted = false;
     m_bIsConnected = false;
     memset(&m_globalStatus, 0, sizeof(ppbaStatus));
@@ -23,7 +20,8 @@ CPegasusPPBAPower::CPegasusPPBAPower()
     m_bPWMA_On = false;
     m_bPWMB_On = false;
     m_pSerx = NULL;
-
+	m_bUSB2PowerPresent = false;
+	m_bUSB2PowerState = OFF;
 
 #ifdef PLUGIN_DEBUG
 #if defined(SB_WIN_BUILD)
@@ -143,7 +141,14 @@ int CPegasusPPBAPower::Connect(const char *pszPort)
     m_bPWMA_On = (m_nPWMA!=0);
     m_bPWMB_On = (m_nPWMB!=0);
 
-    return nErr;
+	m_bUSB2PowerPresent = true;
+	nErr = setUSB2PortState(1); // force on
+	if(nErr)
+		m_bUSB2PowerPresent = false;
+	if(m_bUSB2PowerPresent)
+		m_bUSB2PowerState = ON;
+
+	return nErr;
 }
 
 void CPegasusPPBAPower::Disconnect(int nInstanceCount)
@@ -467,6 +472,12 @@ bool CPegasusPPBAPower::getPortOn(const int &nPortNumber)
             return m_bPWMB_On;
             break;
 
+		case 5:
+			int nStatus;
+			getUSB2PortState(nStatus);
+			return (nStatus == 1);
+			break;
+
         default:
             return false;
             break;
@@ -519,6 +530,10 @@ int CPegasusPPBAPower::setPortOn(const int &nPortNumber, const bool &bEnabled)
             m_bPWMB_On = bEnabled;
             nErr = setDewHeaterPWM(PWMB, bEnabled?m_nPWMB:0);
             break;
+
+		case 5: // usb port on Gen 2
+			setUSB2PortState(bEnabled?1:0);
+			break;
 
         default:
             nErr = ERR_CMDFAILED;
@@ -813,6 +828,8 @@ int CPegasusPPBAPower::setAdjVoltage(int nVolt)
 
 int CPegasusPPBAPower::getPortCount()
 {
+	if(m_bUSB2PowerPresent)
+		return NB_PORTS+1;
     return NB_PORTS;
 }
 
@@ -989,6 +1006,32 @@ int CPegasusPPBAPower::getPowerMetricData()
 #endif
     
     return nErr;
+}
+
+int CPegasusPPBAPower::setUSB2PortState(int nStatus)
+{
+	int nErr = PLUGIN_OK;
+	char szCmd[SERIAL_BUFFER_SIZE];
+
+	if(!m_bIsConnected)
+		return ERR_COMMNOLINK;
+
+	snprintf(szCmd, SERIAL_BUFFER_SIZE, "PU:%d\n", nStatus);
+	nErr = ppbCommand(szCmd, NULL, 0);
+	if(!nErr)
+		m_bUSB2PowerState = nStatus;
+	return nErr;
+}
+
+void CPegasusPPBAPower::getUSB2PortState(int &nStatus)
+{
+	nStatus = m_bUSB2PowerState;
+}
+
+
+bool CPegasusPPBAPower::isUsb2PowerAvailable()
+{
+	return m_bUSB2PowerPresent;
 }
 
 
