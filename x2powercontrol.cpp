@@ -168,9 +168,6 @@ int X2PowerControl::queryAbstraction(const char* pszName, void** ppVal)
     else if (!strcmp(pszName, LoggerInterface_Name))
         *ppVal = GetLogger();
 
-    else if (!strcmp(pszName, ModalSettingsDialogInterface_Name))
-        *ppVal = dynamic_cast<ModalSettingsDialogInterface*>(this);
-
     else if (!strcmp(pszName, MultiConnectionDeviceInterface_Name))
         *ppVal = dynamic_cast<MultiConnectionDeviceInterface*>(this);
 
@@ -182,9 +179,6 @@ int X2PowerControl::queryAbstraction(const char* pszName, void** ppVal)
 
     else if (!strcmp(pszName, SerialPortParams2Interface_Name))
         *ppVal = dynamic_cast<SerialPortParams2Interface*>(this);
-
-    else if (!strcmp(pszName, MultiConnectionDeviceInterface_Name))
-        *ppVal = dynamic_cast<MultiConnectionDeviceInterface*>(this);
 
 	return 0;
 }
