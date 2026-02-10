@@ -21,20 +21,6 @@
 #include "x2focuser.h"
 #include "pegasus_PPBAPower.h"
 
-
-// Forward declare the interfaces that this device is dependent upon
-class X2FocuserExt;
-class SerXInterface;
-class TheSkyXFacadeForDriversInterface;
-class SleeperInterface;
-class SimpleIniUtilInterface;
-class LoggerInterface;
-class MutexInterface;
-class BasicIniUtilInterface;
-class TickCountInterface;
-class MultiConnectionDeviceInterface;
-
-
 #define PARENT_KEY          "PA_PBBA"
 #define CHILD_KEY_PORTNAME    "PortName"
 
@@ -50,6 +36,8 @@ class MultiConnectionDeviceInterface;
 #define CHILD_KEY_PORT3_BOOT "PORT3_BOOT"
 #define CHILD_KEY_PORT4_BOOT "PORT4_BOOT"
 
+#define CHILD_KEY_USB2_NAME	"USB_PORT_NAME"
+
 #if defined(SB_WIN_BUILD)
 #define DEF_PORT_NAME                    "COM1"
 #elif defined(SB_MAC_BUILD)
@@ -58,7 +46,13 @@ class MultiConnectionDeviceInterface;
 #define DEF_PORT_NAME                    "/dev/ttyUSB0"
 #endif
 
-class __attribute__((weak,visibility("default"))) X2PowerControl : public PowerControlDriverInterface, public MultiConnectionDeviceInterface,  public ModalSettingsDialogInterface, public X2GUIEventInterface, public CircuitLabelsInterface, public SetCircuitLabelsInterface, public SerialPortParams2Interface
+#if defined(WIN32)
+#define __CLASS_ATTRIBUTE__(x)
+#else
+#define __CLASS_ATTRIBUTE__(x) __attribute__(x)
+#endif
+
+class __CLASS_ATTRIBUTE__((weak,visibility("default"))) X2PowerControl : public PowerControlDriverInterface, public ModalSettingsDialogInterface, public X2GUIEventInterface, public CircuitLabelsInterface, public SetCircuitLabelsInterface, public SerialPortParams2Interface, public MultiConnectionDeviceInterface
 {
 public:
 	X2PowerControl( const char* pszDisplayName,
@@ -166,7 +160,7 @@ private:
 	CPegasusPPBAPower	m_PowerPorts;
     
     std::vector<std::string>    m_sPortNames;
-    std::vector<std::string>    m_IniPortKey = {CHILD_KEY_PORT1_NAME, CHILD_KEY_PORT2_NAME, CHILD_KEY_PORT3_NAME, CHILD_KEY_PORT4_NAME};
+    std::vector<std::string>    m_IniPortKey = {CHILD_KEY_PORT1_NAME, CHILD_KEY_PORT2_NAME, CHILD_KEY_PORT3_NAME, CHILD_KEY_PORT4_NAME, CHILD_KEY_USB2_NAME};
 };
 
 #endif // __X2Power_H_

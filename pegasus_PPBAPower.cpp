@@ -13,9 +13,6 @@ CPegasusPPBAPower::CPegasusPPBAPower()
     m_globalStatus.bReady = false;
     memset(m_globalStatus.szVersion,0,TEXT_BUFFER_SIZE);
 
-    m_nTargetPos = 0;
-    m_nPosLimit = 0;
-    m_bPosLimitEnabled = false;
     m_bAbborted = false;
     m_bIsConnected = false;
     memset(&m_globalStatus, 0, sizeof(ppbaStatus));
@@ -23,7 +20,8 @@ CPegasusPPBAPower::CPegasusPPBAPower()
     m_bPWMA_On = false;
     m_bPWMB_On = false;
     m_pSerx = NULL;
-
+	m_bUSB2PowerPresent = false;
+	m_bUSB2PowerState = OFF;
 
 #ifdef PLUGIN_DEBUG
 #if defined(SB_WIN_BUILD)
@@ -44,8 +42,9 @@ CPegasusPPBAPower::CPegasusPPBAPower()
     ltime = time(NULL);
     timestamp = asctime(localtime(&ltime));
     timestamp[strlen(timestamp) - 1] = 0;
-    fprintf(Logfile, "[%s] [CPegasusPPBAPower::CPegasusPPBAPower] version %3.2f build %s %s .\n", timestamp, DRIVER_VERSION, __DATE__, __TIME__);
+    fprintf(Logfile, "[%s] [CPegasusPPBAPower::CPegasusPPBAPower] version %3.2f build 2021_08_13_2000.\n", timestamp, DRIVER_VERSION);
     fprintf(Logfile, "[%s] [CPegasusPPBAPower::CPegasusPPBAPower] Constructor Called.\n", timestamp);
+
     fflush(Logfile);
 #endif
 
@@ -75,12 +74,17 @@ int CPegasusPPBAPower::Connect(const char *pszPort)
 	fflush(Logfile);
 #endif
 
-    // 9600 8N1
-    nErr = m_pSerx->open(pszPort, 9600, SerXInterface::B_NOPARITY, "-DTR_CONTROL 1");
-    if(nErr == 0)
-        m_bIsConnected = true;
-    else
-        m_bIsConnected = false;
+	// 9600 8N1
+	if (!m_pSerx->isConnected()) {
+		nErr = m_pSerx->open(pszPort, 9600, SerXInterface::B_NOPARITY);
+		if(nErr == 0) {
+			m_bIsConnected = true;
+		}
+		else
+			m_bIsConnected = false;
+	}
+	else
+		m_bIsConnected = true;
 
     if(!m_bIsConnected)
         return nErr;
@@ -137,7 +141,14 @@ int CPegasusPPBAPower::Connect(const char *pszPort)
     m_bPWMA_On = (m_nPWMA!=0);
     m_bPWMB_On = (m_nPWMB!=0);
 
-    return nErr;
+	m_bUSB2PowerPresent = true;
+	nErr = setUSB2PortState(1); // force on
+	if(nErr)
+		m_bUSB2PowerPresent = false;
+	if(m_bUSB2PowerPresent)
+		m_bUSB2PowerState = ON;
+
+	return nErr;
 }
 
 void CPegasusPPBAPower::Disconnect(int nInstanceCount)
@@ -461,6 +472,12 @@ bool CPegasusPPBAPower::getPortOn(const int &nPortNumber)
             return m_bPWMB_On;
             break;
 
+		case 5:
+			int nStatus;
+			getUSB2PortState(nStatus);
+			return (nStatus == 1);
+			break;
+
         default:
             return false;
             break;
@@ -513,6 +530,10 @@ int CPegasusPPBAPower::setPortOn(const int &nPortNumber, const bool &bEnabled)
             m_bPWMB_On = bEnabled;
             nErr = setDewHeaterPWM(PWMB, bEnabled?m_nPWMB:0);
             break;
+
+		case 5: // usb port on Gen 2
+			setUSB2PortState(bEnabled?1:0);
+			break;
 
         default:
             nErr = ERR_CMDFAILED;
@@ -807,6 +828,8 @@ int CPegasusPPBAPower::setAdjVoltage(int nVolt)
 
 int CPegasusPPBAPower::getPortCount()
 {
+	if(m_bUSB2PowerPresent)
+		return NB_PORTS+1;
     return NB_PORTS;
 }
 
@@ -985,6 +1008,32 @@ int CPegasusPPBAPower::getPowerMetricData()
     return nErr;
 }
 
+int CPegasusPPBAPower::setUSB2PortState(int nStatus)
+{
+	int nErr = PLUGIN_OK;
+	char szCmd[SERIAL_BUFFER_SIZE];
+
+	if(!m_bIsConnected)
+		return ERR_COMMNOLINK;
+
+	snprintf(szCmd, SERIAL_BUFFER_SIZE, "PU:%d\n", nStatus);
+	nErr = ppbCommand(szCmd, NULL, 0);
+	if(!nErr)
+		m_bUSB2PowerState = nStatus;
+	return nErr;
+}
+
+void CPegasusPPBAPower::getUSB2PortState(int &nStatus)
+{
+	nStatus = m_bUSB2PowerState;
+}
+
+
+bool CPegasusPPBAPower::isUsb2PowerAvailable()
+{
+	return m_bUSB2PowerPresent;
+}
+
 
 #pragma mark command and response functions
 
@@ -1109,17 +1158,4 @@ int CPegasusPPBAPower::parseResp(char *pszResp, std::vector<std::string>  &svPar
 
 
     return PLUGIN_OK;
-}
-
-
-void CPegasusPPBAPower::log(std::string sLog)
-{
-#ifdef PLUGIN_DEBUG
-    ltime = time(NULL);
-    timestamp = asctime(localtime(&ltime));
-    timestamp[strlen(timestamp) - 1] = 0;
-    fprintf(Logfile, "[%s] [CPegasusPPBAPower::log] %s\n", timestamp, sLog.c_str());
-    fflush(Logfile);
-#endif
-
 }

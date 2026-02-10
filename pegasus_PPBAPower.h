@@ -24,6 +24,8 @@
 #include <exception>
 #include <typeinfo>
 #include <stdexcept>
+#include <chrono>
+#include <thread>
 
 #include "../../licensedinterfaces/sberrorx.h"
 #include "../../licensedinterfaces/serxinterface.h"
@@ -34,7 +36,7 @@
 #define MAX_TIMEOUT 1000
 #define TEXT_BUFFER_SIZE    1024
 
-#define DRIVER_VERSION  1.19
+#define DRIVER_VERSION  1.21
 
 #define NB_PORTS 4
 #define QUAD12  1
@@ -162,14 +164,18 @@ public:
     int         getPowerMetric(float &fTotalAmps, float &fAmpsQuad, float &fAmpsDewA, float &fAmpsDewB);
     int         getPowerMetricData();
 
-    void        log(std::string sLog);
+	int			setUSB2PortState(int nStatus);
+	void		getUSB2PortState(int &nStatus);
+
+	bool		isUsb2PowerAvailable();
 
 protected:
 
-    int             ppbCommand(const char *pszCmd, char *pszResult, unsigned long nResultMaxLen);
-    int             readResponse(char *pszRespBuffer, unsigned long nBufferLen);
-    int             parseResp(char *pszResp, std::vector<std::string>  &sParsedRes);
+    int			ppbCommand(const char *pszCmd, char *pszResult, unsigned long nResultMaxLen);
+    int			readResponse(char *pszRespBuffer, unsigned long nBufferLen);
+    int			parseResp(char *pszResp, std::vector<std::string>  &sParsedRes);
 
+	int			checkUsb2PortPowerControl();
 
 
     SerXInterface   *m_pSerx;
@@ -186,12 +192,13 @@ protected:
     bool            m_bPWMB_On;
 
     ppbaStatus      m_globalStatus;
-    int             m_nTargetPos;
-    int             m_nPosLimit;
-    bool            m_bPosLimitEnabled;
 	bool			m_bAbborted;
     int             m_nAutoDewAgressiveness;
-    
+
+	bool			m_bPowerCycleUSB2OnConnect;
+	bool			m_bUSB2PowerPresent;
+	int				m_bUSB2PowerState;
+
 #ifdef PLUGIN_DEBUG
     std::string     m_sLogfilePath;
     // timestamp for logs

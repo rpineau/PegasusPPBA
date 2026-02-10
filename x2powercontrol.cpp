@@ -76,7 +76,6 @@ int X2PowerControl::establishLink(void)
     int nErr = SB_OK;
     char szPort[DRIVER_MAX_STRING];
     
-    m_PowerPorts.log("[X2PowerControl::establishLink] called");
     X2MutexLocker ml(GetMutex());
     // get serial port device name
     portNameOnToCharPtr(szPort,DRIVER_MAX_STRING);
@@ -169,6 +168,9 @@ int X2PowerControl::queryAbstraction(const char* pszName, void** ppVal)
     else if (!strcmp(pszName, LoggerInterface_Name))
         *ppVal = GetLogger();
 
+    else if (!strcmp(pszName, MultiConnectionDeviceInterface_Name))
+        *ppVal = dynamic_cast<MultiConnectionDeviceInterface*>(this);
+
     else if (!strcmp(pszName, CircuitLabelsInterface_Name))
         *ppVal = dynamic_cast<CircuitLabelsInterface*>(this);
 
@@ -178,14 +180,6 @@ int X2PowerControl::queryAbstraction(const char* pszName, void** ppVal)
     else if (!strcmp(pszName, SerialPortParams2Interface_Name))
         *ppVal = dynamic_cast<SerialPortParams2Interface*>(this);
 
-    else if (!strcmp(pszName, MultiConnectionDeviceInterface_Name)) {
-        *ppVal = dynamic_cast<MultiConnectionDeviceInterface*>(this);
-#ifdef PLUGIN_DEBUG
-        auto i = reinterpret_cast<std::uintptr_t>(*ppVal);
-        m_PowerPorts.log("[X2PowerControl::queryAbstraction] MultiConnectionDeviceInterface_Name called");
-        m_PowerPorts.log("[X2PowerControl::queryAbstraction] ppVal = " + std::to_string(i));
-#endif
-    }
 	return 0;
 }
 
@@ -313,6 +307,7 @@ int X2PowerControl::execModalSettingsDialog()
                 dx->setCurrentIndex("comboBox", 0);
                 break;
         }
+
         bOn = m_PowerPorts.getOnBootPortOn(QUAD12);
         dx->setChecked("checkBox_5", bOn?1:0);
         bOn = m_PowerPorts.getOnBootPortOn(ADJ);
@@ -328,10 +323,18 @@ int X2PowerControl::execModalSettingsDialog()
                 break;
         }
     }
-    else {
-        dx->setEnabled("pushButton",false);
-        dx->setEnabled("pushButton_2",false);
-    }
+	else {
+		dx->setEnabled("pushButton",false);
+		dx->setEnabled("pushButton_2",false);
+
+		dx->setEnabled("groupBox_3",false);
+		dx->setEnabled("groupBox_6",false);
+		dx->setEnabled("groupBox_7",false);
+		dx->setEnabled("groupBox_2",false);
+
+		dx->setEnabled("radioButton",false);
+		dx->setEnabled("radioButton_2",false);
+	}
 
     //Display the user interface
     if ((nErr = ui->exec(bPressedOK)))
@@ -534,6 +537,10 @@ int X2PowerControl::circuitLabel(const int &nZeroBasedIndex, BasicStringInterfac
             case 3:
                 sLabel = "Dew Heater B";
                 break;
+
+			case 4:
+				sLabel = "USB2 ports";
+				break;
         }
 
         str = sLabel.c_str();
@@ -596,29 +603,17 @@ void X2PowerControl::portNameOnToCharPtr(char* pszPort, const int& nMaxSize) con
 
 int X2PowerControl::deviceIdentifier(BasicStringInterface &sIdentifier)
 {
-#ifdef PLUGIN_DEBUG
-    m_PowerPorts.log("[X2PowerControl::deviceIdentifier]");
-#endif
     sIdentifier = "PPBA_EXT";
     return SB_OK;
 }
 
 int X2PowerControl::isConnectionPossible(const int &nPeerArraySize, MultiConnectionDeviceInterface **ppPeerArray, bool &bConnectionPossible)
 {
-#ifdef PLUGIN_DEBUG
-    m_PowerPorts.log("[X2PowerControl::isConnectionPossible]");
-    m_PowerPorts.log("[X2PowerControl::isConnectionPossible] nPeerArraySize = " + std::to_string(nPeerArraySize));
-
-#endif
     for (int nIndex = 0; nIndex < nPeerArraySize; ++nIndex)
     {
-
         X2FocuserExt *pPeer = dynamic_cast<X2FocuserExt*>(ppPeerArray[nIndex]);
         if (pPeer == NULL)
         {
-#ifdef PLUGIN_DEBUG
-            m_PowerPorts.log("[X2PowerControl::isConnectionPossible] pPeer is NULL");
-#endif
             bConnectionPossible = false;
             return ERR_POINTER;
         }
@@ -630,11 +625,6 @@ int X2PowerControl::isConnectionPossible(const int &nPeerArraySize, MultiConnect
 
 int X2PowerControl::useResource(MultiConnectionDeviceInterface *pPeer)
 {
-#ifdef PLUGIN_DEBUG
-    m_PowerPorts.log("[X2PowerControl::useResource]");
-#endif
-    if(pPeer == NULL)
-        return ERR_POINTER;
 
     X2FocuserExt *pFocuserPeer = dynamic_cast<X2FocuserExt*>(pPeer);
     if (pFocuserPeer == NULL) {
@@ -650,11 +640,6 @@ int X2PowerControl::useResource(MultiConnectionDeviceInterface *pPeer)
 
 int X2PowerControl::swapResource(MultiConnectionDeviceInterface *pPeer)
 {
-#ifdef PLUGIN_DEBUG
-    m_PowerPorts.log("[X2PowerControl::swapResource]");
-#endif
-    if(pPeer == NULL)
-        return ERR_POINTER;
 
     X2FocuserExt *pFocuserPeer = dynamic_cast<X2FocuserExt*>(pPeer);
     if (pFocuserPeer == NULL) {

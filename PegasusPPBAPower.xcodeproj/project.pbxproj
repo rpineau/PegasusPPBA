@@ -3,105 +3,92 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		931843FB1EEF394F00AE51F8 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 931843FA1EEF394F00AE51F8 /* IOKit.framework */; };
-		931843FD1EEF395D00AE51F8 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 931843FC1EEF395D00AE51F8 /* CoreFoundation.framework */; };
-		931844041EEF502500AE51F8 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 931844021EEF500B00AE51F8 /* CoreServices.framework */; };
-		934B63192875196500616768 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 934B63182875196500616768 /* Security.framework */; };
-		9390466D25D7101E009D84F1 /* StopWatch.h in Headers */ = {isa = PBXBuildFile; fileRef = 9390466C25D7101E009D84F1 /* StopWatch.h */; };
-		93CA4AD92B23A14F00301CF8 /* x2focuser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CA4ACF2B23A14F00301CF8 /* x2focuser.cpp */; settings = {COMPILER_FLAGS = "-fvisibility=default"; }; };
-		93CA4ADA2B23A14F00301CF8 /* powerMain.h in Headers */ = {isa = PBXBuildFile; fileRef = 93CA4AD02B23A14F00301CF8 /* powerMain.h */; };
-		93CA4ADB2B23A15000301CF8 /* powerMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CA4AD12B23A14F00301CF8 /* powerMain.cpp */; settings = {COMPILER_FLAGS = "-fvisibility=default"; }; };
-		93CA4ADC2B23A15000301CF8 /* pegasus_PPBAPower.h in Headers */ = {isa = PBXBuildFile; fileRef = 93CA4AD22B23A14F00301CF8 /* pegasus_PPBAPower.h */; };
-		93CA4ADD2B23A15000301CF8 /* x2powercontrol.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CA4AD32B23A14F00301CF8 /* x2powercontrol.cpp */; settings = {COMPILER_FLAGS = "-fvisibility=default"; }; };
-		93CA4ADE2B23A15000301CF8 /* pegasus_PPBAPower.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CA4AD42B23A14F00301CF8 /* pegasus_PPBAPower.cpp */; settings = {COMPILER_FLAGS = "-fvisibility=default"; }; };
-		93CA4ADF2B23A15000301CF8 /* pegasus_ppbaExtFocuser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CA4AD52B23A14F00301CF8 /* pegasus_ppbaExtFocuser.cpp */; settings = {COMPILER_FLAGS = "-fvisibility=default"; }; };
-		93CA4AE02B23A15000301CF8 /* x2focuser.h in Headers */ = {isa = PBXBuildFile; fileRef = 93CA4AD62B23A14F00301CF8 /* x2focuser.h */; };
-		93CA4AE12B23A15000301CF8 /* pegasus_ppbaExtFocuser.h in Headers */ = {isa = PBXBuildFile; fileRef = 93CA4AD72B23A14F00301CF8 /* pegasus_ppbaExtFocuser.h */; };
-		93CA4AE22B23A15000301CF8 /* x2powercontrol.h in Headers */ = {isa = PBXBuildFile; fileRef = 93CA4AD82B23A14F00301CF8 /* x2powercontrol.h */; };
+		9306A75C1EDE325800A1E90B /* pegasus_PPBAPower.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9306A75A1EDE325800A1E90B /* pegasus_PPBAPower.cpp */; };
+		9306A75D1EDE325800A1E90B /* pegasus_PPBAPower.h in Headers */ = {isa = PBXBuildFile; fileRef = 9306A75B1EDE325800A1E90B /* pegasus_PPBAPower.h */; };
+		934DC69126C7282700B89E9B /* x2focuser.h in Headers */ = {isa = PBXBuildFile; fileRef = 934DC68D26C7282700B89E9B /* x2focuser.h */; };
+		934DC69226C7282700B89E9B /* x2focuser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 934DC68E26C7282700B89E9B /* x2focuser.cpp */; };
+		934DC69326C7282700B89E9B /* pegasus_ppbaExtFocuser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 934DC68F26C7282700B89E9B /* pegasus_ppbaExtFocuser.cpp */; };
+		934DC69426C7282700B89E9B /* pegasus_ppbaExtFocuser.h in Headers */ = {isa = PBXBuildFile; fileRef = 934DC69026C7282700B89E9B /* pegasus_ppbaExtFocuser.h */; };
+		9354853B23E7C50200711E27 /* x2powercontrol.h in Headers */ = {isa = PBXBuildFile; fileRef = 9354853923E7C50200711E27 /* x2powercontrol.h */; };
+		9354853C23E7C50200711E27 /* x2powercontrol.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9354853A23E7C50200711E27 /* x2powercontrol.cpp */; };
+		939F4F2D1EE1EE6300E26EED /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 939F4F2C1EE1EE6300E26EED /* IOKit.framework */; };
+		939F4F2F1EE1EE7200E26EED /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 939F4F2E1EE1EE7200E26EED /* CoreFoundation.framework */; };
+		93E3C5B226C2F02900FD3D20 /* powerMain.h in Headers */ = {isa = PBXBuildFile; fileRef = 93E3C5B026C2F02900FD3D20 /* powerMain.h */; };
+		93E3C5B326C2F02900FD3D20 /* powerMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93E3C5B126C2F02900FD3D20 /* powerMain.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		931843E31EEF33FC00AE51F8 /* libPegasusPPBAPower.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libPegasusPPBAPower.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
-		931843FA1EEF394F00AE51F8 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
-		931843FC1EEF395D00AE51F8 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
-		931844021EEF500B00AE51F8 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
-		931844071EEF50D100AE51F8 /* libobjc.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libobjc.tbd; path = usr/lib/libobjc.tbd; sourceTree = SDKROOT; };
-		934B63182875196500616768 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		9390466C25D7101E009D84F1 /* StopWatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StopWatch.h; sourceTree = "<group>"; };
-		93CA4ACF2B23A14F00301CF8 /* x2focuser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = x2focuser.cpp; sourceTree = "<group>"; };
-		93CA4AD02B23A14F00301CF8 /* powerMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = powerMain.h; sourceTree = "<group>"; };
-		93CA4AD12B23A14F00301CF8 /* powerMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = powerMain.cpp; sourceTree = "<group>"; };
-		93CA4AD22B23A14F00301CF8 /* pegasus_PPBAPower.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pegasus_PPBAPower.h; sourceTree = "<group>"; };
-		93CA4AD32B23A14F00301CF8 /* x2powercontrol.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = x2powercontrol.cpp; sourceTree = "<group>"; };
-		93CA4AD42B23A14F00301CF8 /* pegasus_PPBAPower.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pegasus_PPBAPower.cpp; sourceTree = "<group>"; };
-		93CA4AD52B23A14F00301CF8 /* pegasus_ppbaExtFocuser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pegasus_ppbaExtFocuser.cpp; sourceTree = "<group>"; };
-		93CA4AD62B23A14F00301CF8 /* x2focuser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = x2focuser.h; sourceTree = "<group>"; };
-		93CA4AD72B23A14F00301CF8 /* pegasus_ppbaExtFocuser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pegasus_ppbaExtFocuser.h; sourceTree = "<group>"; };
-		93CA4AD82B23A14F00301CF8 /* x2powercontrol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = x2powercontrol.h; sourceTree = "<group>"; };
+		9306A75A1EDE325800A1E90B /* pegasus_PPBAPower.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pegasus_PPBAPower.cpp; sourceTree = "<group>"; };
+		9306A75B1EDE325800A1E90B /* pegasus_PPBAPower.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pegasus_PPBAPower.h; sourceTree = "<group>"; };
+		933E14191EDCA6680044D947 /* libPegasusPPBAPower.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libPegasusPPBAPower.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		934DC68D26C7282700B89E9B /* x2focuser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = x2focuser.h; sourceTree = "<group>"; };
+		934DC68E26C7282700B89E9B /* x2focuser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = x2focuser.cpp; sourceTree = "<group>"; };
+		934DC68F26C7282700B89E9B /* pegasus_ppbaExtFocuser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pegasus_ppbaExtFocuser.cpp; sourceTree = "<group>"; };
+		934DC69026C7282700B89E9B /* pegasus_ppbaExtFocuser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pegasus_ppbaExtFocuser.h; sourceTree = "<group>"; };
+		9354853923E7C50200711E27 /* x2powercontrol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = x2powercontrol.h; sourceTree = "<group>"; };
+		9354853A23E7C50200711E27 /* x2powercontrol.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = x2powercontrol.cpp; sourceTree = "<group>"; };
+		939F4F2C1EE1EE6300E26EED /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		939F4F2E1EE1EE7200E26EED /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		93E3C5B026C2F02900FD3D20 /* powerMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = powerMain.h; sourceTree = "<group>"; };
+		93E3C5B126C2F02900FD3D20 /* powerMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = powerMain.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		931843E01EEF33FC00AE51F8 /* Frameworks */ = {
+		933E14161EDCA6680044D947 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				934B63192875196500616768 /* Security.framework in Frameworks */,
-				931844041EEF502500AE51F8 /* CoreServices.framework in Frameworks */,
-				931843FD1EEF395D00AE51F8 /* CoreFoundation.framework in Frameworks */,
-				931843FB1EEF394F00AE51F8 /* IOKit.framework in Frameworks */,
+				939F4F2F1EE1EE7200E26EED /* CoreFoundation.framework in Frameworks */,
+				939F4F2D1EE1EE6300E26EED /* IOKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		931843DA1EEF33FC00AE51F8 = {
+		933E14101EDCA6680044D947 = {
 			isa = PBXGroup;
 			children = (
-				931843EA1EEF341C00AE51F8 /* Sources */,
-				931843E41EEF33FC00AE51F8 /* Products */,
-				931843F91EEF394F00AE51F8 /* Frameworks */,
+				933E14201EDCA6AC0044D947 /* Sources */,
+				939F4F2B1EE1EE6200E26EED /* Frameworks */,
+				933E141A1EDCA6680044D947 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		931843E41EEF33FC00AE51F8 /* Products */ = {
+		933E141A1EDCA6680044D947 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				931843E31EEF33FC00AE51F8 /* libPegasusPPBAPower.dylib */,
+				933E14191EDCA6680044D947 /* libPegasusPPBAPower.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		931843EA1EEF341C00AE51F8 /* Sources */ = {
+		933E14201EDCA6AC0044D947 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				93CA4AD12B23A14F00301CF8 /* powerMain.cpp */,
-				93CA4AD02B23A14F00301CF8 /* powerMain.h */,
-				93CA4AD52B23A14F00301CF8 /* pegasus_ppbaExtFocuser.cpp */,
-				93CA4AD72B23A14F00301CF8 /* pegasus_ppbaExtFocuser.h */,
-				93CA4AD42B23A14F00301CF8 /* pegasus_PPBAPower.cpp */,
-				93CA4AD22B23A14F00301CF8 /* pegasus_PPBAPower.h */,
-				93CA4ACF2B23A14F00301CF8 /* x2focuser.cpp */,
-				93CA4AD62B23A14F00301CF8 /* x2focuser.h */,
-				93CA4AD32B23A14F00301CF8 /* x2powercontrol.cpp */,
-				93CA4AD82B23A14F00301CF8 /* x2powercontrol.h */,
-				9390466C25D7101E009D84F1 /* StopWatch.h */,
+				934DC68F26C7282700B89E9B /* pegasus_ppbaExtFocuser.cpp */,
+				934DC69026C7282700B89E9B /* pegasus_ppbaExtFocuser.h */,
+				934DC68E26C7282700B89E9B /* x2focuser.cpp */,
+				934DC68D26C7282700B89E9B /* x2focuser.h */,
+				93E3C5B126C2F02900FD3D20 /* powerMain.cpp */,
+				93E3C5B026C2F02900FD3D20 /* powerMain.h */,
+				9354853A23E7C50200711E27 /* x2powercontrol.cpp */,
+				9354853923E7C50200711E27 /* x2powercontrol.h */,
+				9306A75A1EDE325800A1E90B /* pegasus_PPBAPower.cpp */,
+				9306A75B1EDE325800A1E90B /* pegasus_PPBAPower.h */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
 		};
-		931843F91EEF394F00AE51F8 /* Frameworks */ = {
+		939F4F2B1EE1EE6200E26EED /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				934B63182875196500616768 /* Security.framework */,
-				931844071EEF50D100AE51F8 /* libobjc.tbd */,
-				931844021EEF500B00AE51F8 /* CoreServices.framework */,
-				931843FC1EEF395D00AE51F8 /* CoreFoundation.framework */,
-				931843FA1EEF394F00AE51F8 /* IOKit.framework */,
+				939F4F2E1EE1EE7200E26EED /* CoreFoundation.framework */,
+				939F4F2C1EE1EE6300E26EED /* IOKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -109,29 +96,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		931843E11EEF33FC00AE51F8 /* Headers */ = {
+		933E14171EDCA6680044D947 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9390466D25D7101E009D84F1 /* StopWatch.h in Headers */,
-				93CA4ADA2B23A14F00301CF8 /* powerMain.h in Headers */,
-				93CA4AE02B23A15000301CF8 /* x2focuser.h in Headers */,
-				93CA4AE12B23A15000301CF8 /* pegasus_ppbaExtFocuser.h in Headers */,
-				93CA4AE22B23A15000301CF8 /* x2powercontrol.h in Headers */,
-				93CA4ADC2B23A15000301CF8 /* pegasus_PPBAPower.h in Headers */,
+				9354853B23E7C50200711E27 /* x2powercontrol.h in Headers */,
+				9306A75D1EDE325800A1E90B /* pegasus_PPBAPower.h in Headers */,
+				934DC69126C7282700B89E9B /* x2focuser.h in Headers */,
+				934DC69426C7282700B89E9B /* pegasus_ppbaExtFocuser.h in Headers */,
+				93E3C5B226C2F02900FD3D20 /* powerMain.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		931843E21EEF33FC00AE51F8 /* PegasusPPBAPower */ = {
+		933E14181EDCA6680044D947 /* PegasusPPBAPower */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 931843E71EEF33FC00AE51F8 /* Build configuration list for PBXNativeTarget "PegasusPPBAPower" */;
+			buildConfigurationList = 933E141D1EDCA6680044D947 /* Build configuration list for PBXNativeTarget "PegasusPPBAPower" */;
 			buildPhases = (
-				931843DF1EEF33FC00AE51F8 /* Sources */,
-				931843E01EEF33FC00AE51F8 /* Frameworks */,
-				931843E11EEF33FC00AE51F8 /* Headers */,
+				933E14151EDCA6680044D947 /* Sources */,
+				933E14161EDCA6680044D947 /* Frameworks */,
+				933E14171EDCA6680044D947 /* Headers */,
 			);
 			buildRules = (
 			);
@@ -139,27 +125,26 @@
 			);
 			name = PegasusPPBAPower;
 			productName = PegasusPPBAPower;
-			productReference = 931843E31EEF33FC00AE51F8 /* libPegasusPPBAPower.dylib */;
+			productReference = 933E14191EDCA6680044D947 /* libPegasusPPBAPower.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		931843DB1EEF33FC00AE51F8 /* Project object */ = {
+		933E14111EDCA6680044D947 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1400;
+				LastUpgradeCheck = 1420;
 				ORGANIZATIONNAME = "RTI-Zone";
 				TargetAttributes = {
-					931843E21EEF33FC00AE51F8 = {
+					933E14181EDCA6680044D947 = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = PB97QXVYQC;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
-			buildConfigurationList = 931843DE1EEF33FC00AE51F8 /* Build configuration list for PBXProject "PegasusPPBAPower" */;
+			buildConfigurationList = 933E14141EDCA6680044D947 /* Build configuration list for PBXProject "PegasusPPBAPower" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -167,37 +152,36 @@
 				en,
 				Base,
 			);
-			mainGroup = 931843DA1EEF33FC00AE51F8;
-			productRefGroup = 931843E41EEF33FC00AE51F8 /* Products */;
+			mainGroup = 933E14101EDCA6680044D947;
+			productRefGroup = 933E141A1EDCA6680044D947 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				931843E21EEF33FC00AE51F8 /* PegasusPPBAPower */,
+				933E14181EDCA6680044D947 /* PegasusPPBAPower */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		931843DF1EEF33FC00AE51F8 /* Sources */ = {
+		933E14151EDCA6680044D947 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				93CA4ADB2B23A15000301CF8 /* powerMain.cpp in Sources */,
-				93CA4ADE2B23A15000301CF8 /* pegasus_PPBAPower.cpp in Sources */,
-				93CA4AD92B23A14F00301CF8 /* x2focuser.cpp in Sources */,
-				93CA4ADF2B23A15000301CF8 /* pegasus_ppbaExtFocuser.cpp in Sources */,
-				93CA4ADD2B23A15000301CF8 /* x2powercontrol.cpp in Sources */,
+				93E3C5B326C2F02900FD3D20 /* powerMain.cpp in Sources */,
+				9306A75C1EDE325800A1E90B /* pegasus_PPBAPower.cpp in Sources */,
+				9354853C23E7C50200711E27 /* x2powercontrol.cpp in Sources */,
+				934DC69326C7282700B89E9B /* pegasus_ppbaExtFocuser.cpp in Sources */,
+				934DC69226C7282700B89E9B /* x2focuser.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		931843E51EEF33FC00AE51F8 /* Debug */ = {
+		933E141B1EDCA6680044D947 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
@@ -226,11 +210,10 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = PB97QXVYQC;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
@@ -248,23 +231,18 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"\"$(SRCROOT)/\"",
-					"\"$(SRCROOT)/../..\"",
-					/usr/local/include,
-				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
-		931843E61EEF33FC00AE51F8 /* Release */ = {
+		933E141C1EDCA6680044D947 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
@@ -293,11 +271,10 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = PB97QXVYQC;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
@@ -309,31 +286,27 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"\"$(SRCROOT)/\"",
-					"\"$(SRCROOT)/../..\"",
-					/usr/local/include,
-				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
 			name = Release;
 		};
-		931843E81EEF33FC00AE51F8 /* Debug */ = {
+		933E141E1EDCA6680044D947 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CODE_SIGN_IDENTITY = "-";
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = PB97QXVYQC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				EXECUTABLE_PREFIX = lib;
-				INSTALL_PATH = "@rpath";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/static_libs/macOS",
+				"GCC_PREPROCESSOR_DEFINITIONS[arch=*]" = SB_MAC_BUILD;
+				HEADER_SEARCH_PATHS = (
+					"\"$(SRCROOT)/\"",
+					"\"$(SRCROOT)/../..\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				ONLY_ACTIVE_ARCH = NO;
@@ -341,21 +314,23 @@
 			};
 			name = Debug;
 		};
-		931843E91EEF33FC00AE51F8 /* Release */ = {
+		933E141F1EDCA6680044D947 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CODE_SIGN_IDENTITY = "-";
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = PB97QXVYQC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				EXECUTABLE_PREFIX = lib;
-				INSTALL_PATH = "@rpath";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/static_libs/macOS",
+				"GCC_PREPROCESSOR_DEFINITIONS[arch=*]" = SB_MAC_BUILD;
+				HEADER_SEARCH_PATHS = (
+					"\"$(SRCROOT)/\"",
+					"\"$(SRCROOT)/../..\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -363,25 +338,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		931843DE1EEF33FC00AE51F8 /* Build configuration list for PBXProject "PegasusPPBAPower" */ = {
+		933E14141EDCA6680044D947 /* Build configuration list for PBXProject "PegasusPPBAPower" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				931843E51EEF33FC00AE51F8 /* Debug */,
-				931843E61EEF33FC00AE51F8 /* Release */,
+				933E141B1EDCA6680044D947 /* Debug */,
+				933E141C1EDCA6680044D947 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		931843E71EEF33FC00AE51F8 /* Build configuration list for PBXNativeTarget "PegasusPPBAPower" */ = {
+		933E141D1EDCA6680044D947 /* Build configuration list for PBXNativeTarget "PegasusPPBAPower" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				931843E81EEF33FC00AE51F8 /* Debug */,
-				931843E91EEF33FC00AE51F8 /* Release */,
+				933E141E1EDCA6680044D947 /* Debug */,
+				933E141F1EDCA6680044D947 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 931843DB1EEF33FC00AE51F8 /* Project object */;
+	rootObject = 933E14111EDCA6680044D947 /* Project object */;
 }

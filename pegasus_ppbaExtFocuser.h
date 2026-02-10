@@ -22,16 +22,9 @@
 #include <vector>
 #include <sstream>
 #include <iostream>
-#include <iomanip>
-#include <fstream>
-#include <chrono>
-#include <thread>
-#include <ctime>
 #include <exception>
 #include <typeinfo>
 #include <stdexcept>
-
-
 
 #include "../../licensedinterfaces/sberrorx.h"
 #include "../../licensedinterfaces/serxinterface.h"
@@ -40,7 +33,7 @@
 
 // #define PLUGIN_DEBUG_PPBA_EXT_FOC 2
 
-#define DRIVER_VERSION_FOC     1.19
+#define DRIVER_VERSION_FOC     1.20
 
 #define SERIAL_BUFFER_SIZE_FOC 1024
 #define MAX_TIMEOUT_FOC 2500
@@ -69,6 +62,7 @@ public:
     void        SetSerxPointer(SerXInterface *p) { m_pSerx = p; };
     void        getSerxPointer(SerXInterface *p) { p = m_pSerx; };
     void        setLogger(LoggerInterface *pLogger) { m_pLogger = pLogger; };
+    void        setSleeper(SleeperInterface *pSleeper) { m_pSleeper = pSleeper;};
 
     // move commands
     int         haltFocuser();
@@ -112,8 +106,7 @@ public:
     int         setMicrostepping(int nStepping);
 
     float       getTemp();
-    void        log(std::string sLog);
-    
+
 
 protected:
     int             pppaCommand(const char *pszCmd, std::string &sResp, int nTimeout = MAX_TIMEOUT_FOC);
@@ -126,6 +119,7 @@ protected:
 
     SerXInterface       *m_pSerx;
     LoggerInterface     *m_pLogger;
+    SleeperInterface    *m_pSleeper;
 
     bool            m_bDebugLog;
     bool            m_bIsConnected;
